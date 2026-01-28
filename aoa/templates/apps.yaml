@@ -1,46 +1,30 @@
-{{- range $app := .Values.apps -}}
+{{- range $key, $app := .Values.apps }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .name }}
+  name: {{ $app.name | default $key }}
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: {{ .syncWave | default "0" | quote }}
-    {{- if .serverSideDiff | default false }}
-    argocd.argoproj.io/sync-options: ServerSideDiff=true
-    {{- end }}
+    argocd.argoproj.io/sync-wave: {{ $app.syncWave | default "0" | quote }}
 spec:
   project: default
 
   source:
     repoURL: {{ $.Values.global.spec.source.repoURL }}
     targetRevision: {{ $.Values.global.spec.source.targetRevision }}
-    path: ./apps/{{ .appFolder | default .name }} # e.g., ./apps/cert-manager
+    path: ./apps/{{ $app.appFolder | default $app.name | default $key }}
     plugin:
-      name: kustomized # arcade custom kustomized plugin
+      name: kustomized
       env:
         - name: CONFIG_VERSION
-          value: {{ .configVersion | quote }} # e.g., v1.1.0
+          value: {{ $app.configVersion | quote }}
         - name: HELM_RELEASE_NAME
-          value: {{ .releaseName | default .name }}
+          value: {{ $app.releaseName | default $app.name | default $key }}
         - name: NAMESPACE
-          value: {{ .namespace | default .name }} # e.g., cert-manager
+          value: {{ $app.namespace | default $app.name | default $key }}
 
   destination:
-    namespace: {{ .namespace | default .name }}
+    namespace: {{ $app.namespace | default $app.name | default $key }}
     name: in-cluster
-
-  syncPolicy:
-    syncOptions:
-      - CreateNamespace=true
-      {{- if .serverSideApply }}
-      - ServerSideApply=true
-      {{- end }}
-
-  {{- if .ignoreDifferences }}
-  ignoreDifferences:
-  {{- toYaml .ignoreDifferences | nindent 4 }}
-  {{- end }}
-
 {{- end }}
