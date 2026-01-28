@@ -7,7 +7,7 @@ apps:
     enabled: true
 
   cilium:
-    enabled: false
+    enabled: true
     name: cilium
     configVersion: "1.0"
     namespace: kube-system
