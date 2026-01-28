@@ -1,31 +1,33 @@
-# --- Terraform parity ---
-operator:
-  replicas: 2
+# ---------------------------
+# Core Cilium Settings (Terraform parity)
+# ---------------------------
 
-ipam:
-  mode: kubernetes
+kubeProxyReplacement: "true"
 
 routingMode: native
 ipv4NativeRoutingCIDR: 10.0.16.0/20
 
-kubeProxyReplacement: true
-
 bpf:
   masquerade: false
 
-loadBalancer:
-  acceleration: native
+ipam:
+  mode: kubernetes
+
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445   # Talos kube-prism
 
 cgroup:
   autoMount:
     enabled: false
   hostRoot: /sys/fs/cgroup
 
-# Talos kube-prism
-k8sServiceHost: 127.0.0.1
-k8sServicePort: 7445
+loadBalancer:
+  acceleration: native
 
-# Talos-required capabilities (these match your terraform set strings)
+# ---------------------------
+# Security Context (Talos REQUIRED)
+# ---------------------------
+
 securityContext:
   capabilities:
     ciliumAgent:
@@ -40,24 +42,40 @@ securityContext:
       - FOWNER
       - SETGID
       - SETUID
+
     cleanCiliumState:
       - NET_ADMIN
       - SYS_ADMIN
       - SYS_RESOURCE
 
-# Terraform default (unless you enabled encryption there)
+# ---------------------------
+# Operator Scaling (Terraform parity)
+# ---------------------------
+
+operator:
+  replicas: 2
+
+# ---------------------------
+# Encryption (Terraform default: off)
+# ---------------------------
+
 encryption:
   enabled: false
   type: wireguard
 
-# --- Your additions ---
+# ---------------------------
+# Hubble (ENABLED by you)
+# ---------------------------
 
 hubble:
   enabled: true
+
   relay:
     enabled: true
+
   ui:
     enabled: true
+
   metrics:
     enabled:
       - dns
@@ -68,7 +86,10 @@ hubble:
       - icmp
       - http
 
-# Monitoring via ServiceMonitors (requires Prometheus Operator CRDs present)
+# ---------------------------
+# Prometheus / Monitoring (ENABLED by you)
+# ---------------------------
+
 prometheus:
   serviceMonitor:
     enabled: true
@@ -79,7 +100,10 @@ operator:
     serviceMonitor:
       enabled: true
 
-# Cilium Ingress Controller
+# ---------------------------
+# Ingress Controller (ENABLED by you)
+# ---------------------------
+
 ingressController:
   enabled: true
   default: true
@@ -88,5 +112,22 @@ ingressController:
   defaultSecretNamespace: kube-system
   defaultSecretName: cilium-default-cert
 
+# ---------------------------
+# NodePort (Terraform parity)
+# ---------------------------
+
 nodePort:
   enabled: true
+
+# ---------------------------
+# LB IPAM (Terraform parity — Hetzner CCM handles IPs)
+# ---------------------------
+
+defaultLBServiceIPAM: ""
+
+# ---------------------------
+# Optional: Gateway API (off by default)
+# ---------------------------
+
+gatewayAPI:
+  enabled: false
