@@ -94,11 +94,10 @@ apps:
     enabled: false
     
 global:
+  clusterName: k8s01
   spec:
     source:
       targetRevision: main
-      repoURL: git@repo.arcade.ch:argo/managed-k8s.git
-  clusterName: k8s01
-  spec:
+      repoURL: git@github.com:rbicker/rbs-k8s01-argo.git
       destination:
         name: in-cluster
