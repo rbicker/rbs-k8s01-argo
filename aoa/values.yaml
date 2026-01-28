@@ -4,14 +4,11 @@ apps:
     name: argocd
     configVersion: "1.0"
     namespace: argocd
-    enabled: true
 
   cilium:
-    enabled: true
     name: cilium
     configVersion: "1.0"
     namespace: kube-system
-    enabled: true
     ignoreDifferences:
     - kind: Secret
       name: cilium-ca
@@ -49,13 +46,11 @@ apps:
     name: coredns
     configVersion: "1.0"
     namespace: kube-system
-    enabled: false
 
   fluentBit:
     name: fluent-bit
     configVersion: "1.0"
     namespace: logging
-    enabled: false
 
   kubePrometheusStack:
     name: kube-prometheus-stack
@@ -64,7 +59,6 @@ apps:
     serverSideApply: true
     serverSideDiff: true
     releaseName: prometheus
-    enabled: false
 
   kubePrometheusStackCrds:
     name: kube-prometheus-stack-crds
@@ -73,19 +67,16 @@ apps:
     serverSideApply: true
     serverSideDiff: true
     syncWave: "-1"
-    enabled: false
 
   loki-scalable:
     name: loki-scalable
     configVersion: "1.0"
     namespace: monitoring
-    enabled: false
 
   metricsServer:
     name: metrics-server
     configVersion: "1.0"
     namespace: kube-system
-    enabled: false
 
   velero:
     name: velero
