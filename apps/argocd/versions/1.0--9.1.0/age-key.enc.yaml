@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+    name: age-key
+    namespace: argocd
+data:
+    key.txt: ENC[AES256_GCM,data:tNb/5e6eWBRJCYL7LO3oJ2NDfVJBGxRi5/p60MGejEdj4QT0wTxLFsYUsUfQnPhjMNocdscZ3HPP90gJyhW3VCpuKT2rJybbnUJLolli3GK5i215zHcOTbA8j9/s7eCkga44cw==,iv:rN6Xj16J/kppJHMuL1LuXpo24orr5nSNqT/U0Qr+Jjc=,tag:3pUoHG0+gi3gRPprPi5JXg==,type:str]
+sops:
+    age:
+        - recipient: age1vvpm73fq42ywkr7jeuewjpk8d9hew9u3dq389dy9r85ugezqgy6qh8zqzy
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSArQVZDSDJyT1ZVUFgvcTVT
+            MDBqakNhOUVXSWpndHNvdVJNY1cwckxxMEZJClFQR2VoUGlhNlJGc2h3U09mWEho
+            TFJBRzlydHcxUVVJR0R4VkhEZEZtNlkKLS0tIGVXYWwyNEJhNzNBN0xzdktvdVU0
+            Z0p5d09zTVM1b0NSN2JOWUgzVWlIRk0K6nbgKFocUiVbjPekNMGmOsGZKa+e0BdU
+            n8ZnxrbmONxz/5eAC30qGarUWmU9q+ofY7IoLmDA0LlpGE6EJaVI1Q==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2026-01-28T20:07:03Z"
+    mac: ENC[AES256_GCM,data:UnkGng7VQqwYIOsq8FqyWoBVNt8CGTPQNlVWMng5alBViwdNwx5G3XOLTrMZZIgDKRxjTgS7tVPJUjx+1n9zZ1EuqDBn+VO9MZpBjFE0aja8S+6iC/wQNzsqZZnJXoU51OIQnkDkYM4epo8N7FGfB4Ih6mkfoIACfYyhXasTgEQ=,iv:hGJbMazr1Ro06He9Sxs/SsuuuzokQjIXlz26lYWAU4I=,tag:yoKZ4Fx+V4fNAupdkN/kng==,type:str]
+    unencrypted_regex: ^(apiVersion|kind|metadata|type|namespace)$
+    version: 3.11.0

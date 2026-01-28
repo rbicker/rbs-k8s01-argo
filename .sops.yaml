@@ -1,0 +1,7 @@
+# .sops.yaml
+creation_rules:
+  - path_regex: '.*\.ya?ml$'
+    unencrypted_regex: '^(apiVersion|kind|metadata|type|namespace)$'  # Leave K8s metadata unencrypted
+    key_groups:
+      - age:
+          - age1vvpm73fq42ywkr7jeuewjpk8d9hew9u3dq389dy9r85ugezqgy6qh8zqzy

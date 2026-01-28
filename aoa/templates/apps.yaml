@@ -1,0 +1,48 @@
+{{- range $app := .Values.apps -}}
+{{- if .enabled | default false }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ .name }}-{{ $.Values.global.clusterName }}
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: {{ .syncWave | default "0" | quote }}
+    {{- if .serverSideDiff | default false }}
+    argocd.argoproj.io/sync-options: ServerSideDiff=true
+    {{- end }}
+spec:
+  project: default
+
+  source:
+    repoURL: {{ $.Values.global.spec.source.repoURL }}
+    targetRevision: {{ $.Values.global.spec.source.targetRevision }}
+    path: ./apps/{{ .appFolder | default .name }} # e.g., ./apps/cert-manager
+    plugin:
+      name: kustomized # arcade custom kustomized plugin
+      env:
+        - name: CONFIG_VERSION
+          value: {{ .configVersion | quote }} # e.g., v1.1.0
+        - name: HELM_RELEASE_NAME
+          value: {{ .releaseName | default .name }}
+        - name: NAMESPACE
+          value: {{ .namespace | default .name }} # e.g., cert-manager
+
+  destination:
+    namespace: {{ .namespace | default .name }}
+    name: {{ .destinationName | default $.Values.global.spec.destination.name }}
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      {{- if .serverSideApply }}
+      - ServerSideApply=true
+      {{- end }}
+
+  {{- if .ignoreDifferences }}
+  ignoreDifferences:
+  {{- toYaml .ignoreDifferences | nindent 4 }}
+  {{- end }}
+
+{{- end }}
+{{- end }}

@@ -1,0 +1,231 @@
+---
+
+# global:
+#    domain: "argo-domain.example.com"
+
+configs:
+  # secret:
+  #   argocdServerAdminPassword: "<admin-password-hash>"
+  # params:
+  #   server.insecure: true
+  cm:
+    # Enable Kustomize Alpha Plugins via Argo CD ConfigMap, required for ksops
+    kustomize.buildOptions: "--enable-alpha-plugins --enable-exec"
+    
+    # The health assessment of argoproj.io/Application CRD 
+    # has been removed in argocd 1.8 (see #3781 for more information). 
+    # You might need to restore it if you are using app-of-apps pattern and 
+    # orchestrating synchronization using sync waves. 
+    # Add the following resource customization in argocd-cm ConfigMap:
+    resource.customizations.health.argoproj.io_Application: |
+      hs = {}
+      hs.status = "Progressing"
+      hs.message = ""
+      if obj.status ~= nil then
+        if obj.status.health ~= nil then
+          hs.status = obj.status.health.status
+          if obj.status.health.message ~= nil then
+            hs.message = obj.status.health.message
+          end
+        end
+      end
+      return hs
+
+  cmp:
+    create: true # create the argocd-cmp-cm configmap
+    plugins:
+      # files to be added to argocd-cmp-cm
+      kustomized:
+        init:
+          command: [sh]
+          args: [-c, 'echo "Initializing..."']
+        generate:
+          command: [sh, -c]
+          args:
+            - |
+                set -euo pipefail
+
+                # --------------------------
+                # Expected environment variables:
+                # ARGOCD_ENV_CONFIG_VERSION: config version (e.g. 1.1.0)
+                # ARGOCD_ENV_HELM_RELEASE_NAME: Helm release name
+                # ARGOCD_ENV_NAMESPACE: target namespace
+                # --------------------------
+
+                echo "[kustomized] Starting kustomized plugin..." >&2
+                CONFIG_VERSION="$ARGOCD_ENV_CONFIG_VERSION"
+                CHARTS_DIR="./charts"
+                VERSION_FOLDER=$(find "./versions" -maxdepth 1 -type d -name "${CONFIG_VERSION}--*" | sort | tail -n1)
+
+                if [[ -z "$VERSION_FOLDER" ]]; then
+                  echo "[kustomized] ERROR: No version folder found for app version $CONFIG_VERSION" >&2
+                  exit 1
+                fi
+
+                # if it is a helm app
+                if [[ -d "$CHARTS_DIR" ]]; then
+                  # --------------------------
+                  # Determine version folder and chart version
+                  # --------------------------
+
+                  # Extract chart version from folder name
+                  CHART_VERSION="${VERSION_FOLDER##*--}"
+                  CHART_FILE_TGZ="$CHARTS_DIR/$CHART_VERSION.tgz"
+                  CHART_DIR="$CHARTS_DIR/$CHART_VERSION"
+
+                  if [[ -f "$CHART_FILE_TGZ" ]]; then
+                    CHART_SOURCE="$CHART_FILE_TGZ"
+                    echo "[kustomized] Using packaged chart: $CHART_FILE_TGZ" >&2
+                  elif [[ -d "$CHART_DIR" ]]; then
+                    CHART_SOURCE="$CHART_DIR"
+                    echo "[kustomized] Using unpacked chart directory: $CHART_DIR" >&2
+                  else
+                    echo "[kustomized] ERROR: Neither $CHART_FILE_TGZ nor $CHART_DIR found" >&2
+                    exit 1
+                  fi
+
+                  echo "[kustomized] HELM_RELEASE_NAME=$ARGOCD_ENV_HELM_RELEASE_NAME; CHART_SOURCE=$CHART_SOURCE" >&2
+
+                  # --------------------------
+                  # Collect value files dynamically
+                  # --------------------------
+                  FILES=""
+                  echo "[kustomized] Collecting values files..." >&2
+                  while IFS= read -r f; do
+                    echo "  + including values file $f" >&2
+                    FILES="$FILES -f $f"
+                  done < <(find "$VERSION_FOLDER" -maxdepth 1 -type f -name 'values*.yaml' 2>/dev/null | sort)
+
+                  # --------------------------
+                  # Helm rendering
+                  # --------------------------
+                  echo "[kustomized] Rendering Helm chart $CHART_SOURCE for app version $CONFIG_VERSION to ./generated.yaml" >&2
+                  helm template \
+                    --namespace "${ARGOCD_ENV_NAMESPACE}" \
+                    --release-name "${ARGOCD_ENV_HELM_RELEASE_NAME}" \
+                    $FILES "$CHART_SOURCE" > "$VERSION_FOLDER/generated.yaml"
+                else
+                  echo "[kustomized] No charts directory found at $CHARTS_DIR, skipping Helm rendering" >&2
+                fi
+
+                # --------------------------
+                # Kustomize builds
+                # --------------------------
+                echo "[kustomized] Running Kustomize build in '.'" >&2
+                kustomize build --enable-alpha-plugins --enable-exec "."
+
+repoServer:
+  env:
+  - name: SOPS_AGE_KEY_FILE
+    value: /etc/age/keys/key.txt
+  extraContainers:
+  - command:
+    - /var/run/argocd/argocd-cmp-server
+    image: busybox
+    name: cmp-kustomized
+    env:
+    - name: SOPS_AGE_KEY_FILE
+      value: /etc/age/keys/key.txt
+    securityContext:
+      runAsNonRoot: true
+      runAsUser: 999
+    volumeMounts:
+    - mountPath: /var/run/argocd
+      name: var-files
+    - mountPath: /home/argocd/cmp-server/plugins
+      name: plugins
+    - mountPath: /home/argocd/cmp-server/config/plugin.yaml
+      name: argocd-cmp-cm
+      subPath: kustomized.yaml
+    - mountPath: /tmp
+      name: cmp-tmp
+    - mountPath: /etc/age/keys
+      name: age-key
+    - mountPath: /usr/local/bin/helm
+      name: custom-tools
+      subPath: helm-sops
+    - mountPath: /usr/local/bin/_helm
+      name: custom-tools
+      subPath: helm
+    - mountPath: /usr/local/bin/sops
+      name: custom-tools
+      subPath: sops
+    - mountPath: /usr/local/bin/kustomize
+      name: custom-tools
+      subPath: kustomize
+    - mountPath: /usr/local/bin/ksops
+      name: custom-tools
+      subPath: ksops
+  initContainers:
+  - args:
+    - |
+      echo "Getting KSOPS..." && mv ksops /custom-tools/ && mv kustomize /custom-tools/ && echo "Done."
+    command:
+    - /bin/sh
+    - -c
+    image: viaductoss/ksops:v4.3.2
+    name: install-ksops
+    volumeMounts:
+    - mountPath: /custom-tools
+      name: custom-tools
+  - args:
+    - |
+      echo "Downloading Helm, SOPS and Helm-SOPS..." && wget -qO- "https://get.helm.sh/helm-${HELM_VERSION}-linux-amd64.tar.gz" | tar -xvzf - && mv linux-amd64/helm /custom-tools/ && chmod +x /custom-tools/helm && wget -q -O /custom-tools/sops "https://github.com/mozilla/sops/releases/download/${SOPS_VERSION}/sops-${SOPS_VERSION}.linux" && chmod +x /custom-tools/sops && wget -qO- "https://github.com/camptocamp/helm-sops/releases/download/${HELM_SOPS_VERSION}/helm-sops_${HELM_SOPS_VERSION}_linux_amd64.tar.gz" | tar -xvzf - && mv helm-sops /custom-tools/ && chmod +x /custom-tools/helm-sops && echo "Done."
+    command:
+    - sh
+    - -c
+    env:
+    - name: HELM_VERSION
+      value: v3.15.2
+    - name: SOPS_VERSION
+      value: 3.2.0
+    - name: HELM_SOPS_VERSION
+      value: 20230706-1
+    image: alpine:3
+    name: download-tools
+    volumeMounts:
+    - mountPath: /custom-tools
+      name: custom-tools
+  volumeMounts:
+  - mountPath: /etc/age/keys
+    name: age-key
+  - mountPath: /usr/local/bin/helm
+    name: custom-tools
+    subPath: helm-sops
+  - mountPath: /usr/local/bin/_helm
+    name: custom-tools
+    subPath: helm
+  - mountPath: /usr/local/bin/sops
+    name: custom-tools
+    subPath: sops
+  - mountPath: /usr/local/bin/kustomize
+    name: custom-tools
+    subPath: kustomize
+  - mountPath: /usr/local/bin/ksops
+    name: custom-tools
+    subPath: ksops
+  volumes:
+  - emptyDir: {}
+    name: cmp-tmp
+  - configMap:
+      name: argocd-cmp-cm
+    name: argocd-cmp-cm
+  - emptyDir: {}
+    name: custom-tools
+  - name: age-key
+    secret:
+      secretName: age-key
+
+#server:
+#  ingress:
+#    enabled: true
+#    ingressClassName: cilium
+#    annotations:
+#      ingress.cilium.io/tls-passthrough: enabled
+    # ingressClassName: nginx
+    # annotations:
+    #   nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    #   nginx.ingress.kubernetes.io/backend-protocol: "HTTP"
+    # extraTls:
+    #   - hosts:
+    #       - "argo-<k8s_cluster_name>.arcade.ch"

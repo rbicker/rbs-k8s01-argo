@@ -1,0 +1,100 @@
+apps:
+
+  argocd:
+    name: argocd
+    configVersion: "1.0"
+    namespace: argocd
+    enabled: false
+
+  cilium:
+    enabled: false
+    name: cilium
+    configVersion: "1.0"
+    namespace: kube-system
+    enabled: true
+    ignoreDifferences:
+    - kind: Secret
+      name: cilium-ca
+      namespace: kube-system
+      jsonPointers:
+        - /data
+    - kind: Secret
+      name: hubble-relay-client-certs
+      namespace: kube-system
+      jsonPointers:
+        - /data
+    - kind: Secret
+      name: hubble-server-certs
+      namespace: kube-system
+      jsonPointers:
+        - /data
+    - group: "apps"
+      kind: DaemonSet
+      name: cilium
+      namespace: kube-system
+      jsonPointers:
+        - /spec/template/spec/volumes
+        - /spec/template/spec/containers
+        - /spec/template/spec/securityContext
+    - group: "apps"
+      kind: DaemonSet
+      name: cilium-envoy
+      namespace: kube-system
+      jsonPointers:
+        - /spec/template/spec/volumes
+        - /spec/template/spec/containers
+        - /spec/template/spec/securityContext
+
+  coredns:
+    name: coredns
+    configVersion: "1.0"
+    namespace: kube-system
+    enabled: false
+
+  fluentBit:
+    name: fluent-bit
+    configVersion: "1.0"
+    namespace: logging
+    enabled: false
+
+  kubePrometheusStack:
+    name: kube-prometheus-stack
+    configVersion: "1.0"
+    namespace: monitoring
+    serverSideApply: true
+    serverSideDiff: true
+    releaseName: prometheus
+    enabled: false
+
+  kubePrometheusStackCrds:
+    name: kube-prometheus-stack-crds
+    configVersion: "1.0"
+    namespace: monitoring
+    serverSideApply: true
+    serverSideDiff: true
+    syncWave: "-1"
+    enabled: false
+
+  loki-scalable:
+    name: loki-scalable
+    configVersion: "1.0"
+    namespace: monitoring
+    enabled: false
+
+  metricsServer:
+    name: metrics-server
+    configVersion: "1.0"
+    namespace: kube-system
+    enabled: false
+
+  velero:
+    name: velero
+    configVersion: "1.0"
+    namespace: velero
+    enabled: false
+    
+global:
+  spec:
+    source:
+      targetRevision: main
+      repoURL: git@repo.arcade.ch:argo/managed-k8s.git
