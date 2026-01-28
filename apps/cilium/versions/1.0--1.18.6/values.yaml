@@ -1,25 +1,81 @@
----
+# ---------------------------
+# Core Cilium Settings (Terraform parity)
+# ---------------------------
 
-# terraform defines the following cidr ranges:
-#network_ipv4_cidr = "10.0.0.0/16"
-#node_ipv4_cidr    = "10.0.1.0/24" # -> used for hetzner nodes
-#pod_ipv4_cidr     = "10.0.16.0/20" -> needs to be set here in cilium values
-#service_ipv4_cidr = "10.0.8.0/21" -> is set in kubernetes cluster configuration
+kubeProxyReplacement: "true"
 
-kubeProxyReplacement: true
+routingMode: native
+ipv4NativeRoutingCIDR: 10.0.16.0/20
+
+bpf:
+  masquerade: false
 
 ipam:
-  operator:
-    clusterPoolIPv4PodCIDRList:
-      # cilium uses "10.0.0.0/8" for the pod network by default.
-      # as this conflicts with the node ip range, we run into troubles:
-      # see https://docs.cilium.io/en/stable/network/concepts/ipam/cluster-pool/#check-for-conflicting-node-cidrs
-      # so it is important to change it to a non-conflicting range:
-      - "10.0.16.0/20"
+  mode: kubernetes
+
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445   # Talos kube-prism
+
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+
+loadBalancer:
+  acceleration: native
+
+# ---------------------------
+# Security Context (Talos REQUIRED)
+# ---------------------------
+
+securityContext:
+  capabilities:
+    ciliumAgent:
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
+
+# ---------------------------
+# Operator Scaling (Terraform parity)
+# ---------------------------
+
+operator:
+  replicas: 2
+
+# ---------------------------
+# Encryption (Terraform default: off)
+# ---------------------------
+
+encryption:
+  enabled: false
+  type: wireguard
+
+# ---------------------------
+# Hubble (ENABLED by you)
+# ---------------------------
 
 hubble:
+  enabled: true
+
   relay:
     enabled: true
+
+  ui:
+    enabled: true
+
   metrics:
     enabled:
       - dns
@@ -29,11 +85,24 @@ hubble:
       - port-distribution
       - icmp
       - http
+
+# ---------------------------
+# Prometheus / Monitoring (ENABLED by you)
+# ---------------------------
+
+prometheus:
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
+
+operator:
+  prometheus:
     serviceMonitor:
       enabled: true
 
-  ui:
-    enabled: true
+# ---------------------------
+# Ingress Controller (ENABLED by you)
+# ---------------------------
 
 ingressController:
   enabled: true
@@ -42,27 +111,23 @@ ingressController:
   enforceHttps: true
   defaultSecretNamespace: kube-system
   defaultSecretName: cilium-default-cert
-  # service:
-  #  loadBalancerIP: "<static-ip>"
 
-# gatewayAPI:
-#   enabled: true
-#   enableAlpn: true
-#   enableAppProtocol: true
-
-prometheus:
-  enabled: true
-  serviceMonitor:
-    enabled: true
-    trustCRDsExist: true
+# ---------------------------
+# NodePort (Terraform parity)
+# ---------------------------
 
 nodePort:
   enabled: true
 
-operator:
-  prometheus:
-    enabled: true
-    serviceMonitor:
-      enabled: true
+# ---------------------------
+# LB IPAM (Terraform parity — Hetzner CCM handles IPs)
+# ---------------------------
 
-defaultLBServiceIPAM: "none"
+defaultLBServiceIPAM: ""
+
+# ---------------------------
+# Optional: Gateway API (off by default)
+# ---------------------------
+
+gatewayAPI:
+  enabled: false
