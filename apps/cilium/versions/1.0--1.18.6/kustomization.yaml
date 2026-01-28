@@ -1,6 +1,5 @@
 resources:
 - ./generated.yaml
-- ./manifests/l2policy.yaml
 - ./manifests/prometheusrules/cilium-health-endpoint-unreachable.yaml
 - ./manifests/prometheusrules/cilium-node-unreachable.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
