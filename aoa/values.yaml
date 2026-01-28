@@ -4,7 +4,7 @@ apps:
     name: argocd
     configVersion: "1.0"
     namespace: argocd
-    enabled: false
+    enabled: true
 
   cilium:
     enabled: false
