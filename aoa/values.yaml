@@ -91,10 +91,8 @@ apps:
     name: velero
     configVersion: "1.0"
     namespace: velero
-    enabled: false
     
 global:
-  clusterName: k8s01
   spec:
     source:
       targetRevision: main

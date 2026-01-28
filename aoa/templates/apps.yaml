@@ -3,7 +3,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: {{ .name }}-{{ $.Values.global.clusterName }}
+  name: {{ .name }}
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: {{ .syncWave | default "0" | quote }}
@@ -29,7 +29,7 @@ spec:
 
   destination:
     namespace: {{ .namespace | default .name }}
-    name: {{ .destinationName | default $.Values.global.spec.destination.name }}
+    name: in-cluster
 
   syncPolicy:
     syncOptions:
