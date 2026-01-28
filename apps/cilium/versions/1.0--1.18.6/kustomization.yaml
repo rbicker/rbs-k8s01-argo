@@ -1,4 +1,4 @@
 resources:
-- ./generated.yaml
- - ./manifests/prometheusrules/cilium-health-endpoint-unreachable.yaml
- - ./manifests/prometheusrules/cilium-node-unreachable.yaml
+  - ./generated.yaml
+  - ./manifests/prometheusrules/cilium-health-endpoint-unreachable.yaml
+  - ./manifests/prometheusrules/cilium-node-unreachable.yaml
