@@ -5,6 +5,11 @@ apps:
     configVersion: "1.0"
     namespace: argocd
 
+  hcloudCsi:
+    name: hcloud-csi
+    configVersion: "1.0"
+    namespace: kube-system
+
   cilium:
     name: cilium
     configVersion: "1.0"
@@ -47,10 +52,10 @@ apps:
     configVersion: "1.0"
     namespace: kube-system
 
-  fluentBit:
-    name: fluent-bit
-    configVersion: "1.0"
-    namespace: logging
+  # fluentBit:
+  #   name: fluent-bit
+  #   configVersion: "1.0"
+  #   namespace: logging
 
   kubePrometheusStack:
     name: kube-prometheus-stack
@@ -68,10 +73,10 @@ apps:
     serverSideDiff: true
     syncWave: "-1"
 
-  loki-scalable:
-    name: loki-scalable
-    configVersion: "1.0"
-    namespace: monitoring
+  # loki-scalable:
+  #   name: loki-scalable
+  #   configVersion: "1.0"
+  #   namespace: monitoring
 
   metricsServer:
     name: metrics-server

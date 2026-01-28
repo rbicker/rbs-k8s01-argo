@@ -1,0 +1,7 @@
+---
+resources:
+  - ./generated.yaml # generated from argo kustomized plugin
+
+generators:
+  - ./secret-generator.yaml
+  
