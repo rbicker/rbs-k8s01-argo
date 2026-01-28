@@ -1,5 +1,4 @@
 {{- range $app := .Values.apps -}}
-{{- if .enabled | default false }}
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: Application
@@ -44,5 +43,4 @@ spec:
   {{- toYaml .ignoreDifferences | nindent 4 }}
   {{- end }}
 
-{{- end }}
 {{- end }}
