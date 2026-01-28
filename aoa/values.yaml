@@ -78,10 +78,10 @@ apps:
     configVersion: "1.0"
     namespace: kube-system
 
-  velero:
-    name: velero
-    configVersion: "1.0"
-    namespace: velero
+  # velero:
+  #   name: velero
+  #   configVersion: "1.0"
+  #   namespace: velero
     
 global:
   spec:
