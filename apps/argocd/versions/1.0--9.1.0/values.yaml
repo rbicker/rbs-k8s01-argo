@@ -99,7 +99,7 @@ configs:
                   # --------------------------
                   # Helm rendering
                   # --------------------------
-                  echo "[kustomized] Rendering Helm chart $CHART_SOURCE for app version $CONFIG_VERSION to ./generated.yaml" >&2
+                  echo "[kustomized] Rendering Helm chart $CHART_SOURCE for app version $CONFIG_VERSION" >&2
                   helm template \
                     --namespace "${ARGOCD_ENV_NAMESPACE}" \
                     --release-name "${ARGOCD_ENV_HELM_RELEASE_NAME}" \
@@ -111,8 +111,8 @@ configs:
                 # --------------------------
                 # Kustomize builds
                 # --------------------------
-                echo "[kustomized] Running Kustomize build in '.'" >&2
-                kustomize build --enable-alpha-plugins --enable-exec "."
+                echo "[kustomized] Running Kustomize build in '$VERSION_FOLDER'" >&2
+                kustomize build --enable-alpha-plugins --enable-exec "$VERSION_FOLDER"
 
 repoServer:
   env:
