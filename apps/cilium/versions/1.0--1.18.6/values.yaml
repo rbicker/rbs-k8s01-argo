@@ -47,7 +47,7 @@ encryption:
   enabled: false
   type: wireguard
 
-defaultLBServiceIPAM: ""
+defaultLBServiceIPAM: "lbipam"
 
 nodePort:
   enabled: true
