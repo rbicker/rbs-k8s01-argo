@@ -14,38 +14,38 @@ apps:
     name: cilium
     configVersion: "1.0"
     namespace: kube-system
-    ignoreDifferences:
-    - kind: Secret
-      name: cilium-ca
-      namespace: kube-system
-      jsonPointers:
-        - /data
-    - kind: Secret
-      name: hubble-relay-client-certs
-      namespace: kube-system
-      jsonPointers:
-        - /data
-    - kind: Secret
-      name: hubble-server-certs
-      namespace: kube-system
-      jsonPointers:
-        - /data
-    - group: "apps"
-      kind: DaemonSet
-      name: cilium
-      namespace: kube-system
-      jsonPointers:
-        - /spec/template/spec/volumes
-        - /spec/template/spec/containers
-        - /spec/template/spec/securityContext
-    - group: "apps"
-      kind: DaemonSet
-      name: cilium-envoy
-      namespace: kube-system
-      jsonPointers:
-        - /spec/template/spec/volumes
-        - /spec/template/spec/containers
-        - /spec/template/spec/securityContext
+    # ignoreDifferences:
+    # - kind: Secret
+    #   name: cilium-ca
+    #   namespace: kube-system
+    #   jsonPointers:
+    #     - /data
+    # - kind: Secret
+    #   name: hubble-relay-client-certs
+    #   namespace: kube-system
+    #   jsonPointers:
+    #     - /data
+    # - kind: Secret
+    #   name: hubble-server-certs
+    #   namespace: kube-system
+    #   jsonPointers:
+    #     - /data
+    # - group: "apps"
+    #   kind: DaemonSet
+    #   name: cilium
+    #   namespace: kube-system
+    #   jsonPointers:
+    #     - /spec/template/spec/volumes
+    #     - /spec/template/spec/containers
+    #     - /spec/template/spec/securityContext
+    # - group: "apps"
+    #   kind: DaemonSet
+    #   name: cilium-envoy
+    #   namespace: kube-system
+    #   jsonPointers:
+    #     - /spec/template/spec/volumes
+    #     - /spec/template/spec/containers
+    #     - /spec/template/spec/securityContext
 
   coredns:
     name: coredns
