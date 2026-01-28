@@ -1,0 +1,68 @@
+---
+
+# terraform defines the following cidr ranges:
+#network_ipv4_cidr = "10.0.0.0/16"
+#node_ipv4_cidr    = "10.0.1.0/24" # -> used for hetzner nodes
+#pod_ipv4_cidr     = "10.0.16.0/20" -> needs to be set here in cilium values
+#service_ipv4_cidr = "10.0.8.0/21" -> is set in kubernetes cluster configuration
+
+kubeProxyReplacement: true
+
+ipam:
+  operator:
+    clusterPoolIPv4PodCIDRList:
+      # cilium uses "10.0.0.0/8" for the pod network by default.
+      # as this conflicts with the node ip range, we run into troubles:
+      # see https://docs.cilium.io/en/stable/network/concepts/ipam/cluster-pool/#check-for-conflicting-node-cidrs
+      # so it is important to change it to a non-conflicting range:
+      - "10.0.16.0/20"
+
+hubble:
+  relay:
+    enabled: true
+  metrics:
+    enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+    serviceMonitor:
+      enabled: true
+
+  ui:
+    enabled: true
+
+ingressController:
+  enabled: true
+  default: true
+  loadbalancerMode: shared
+  enforceHttps: true
+  defaultSecretNamespace: kube-system
+  defaultSecretName: cilium-default-cert
+  # service:
+  #  loadBalancerIP: "<static-ip>"
+
+# gatewayAPI:
+#   enabled: true
+#   enableAlpn: true
+#   enableAppProtocol: true
+
+prometheus:
+  enabled: true
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
+
+nodePort:
+  enabled: true
+
+operator:
+  prometheus:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+
+defaultLBServiceIPAM: "none"

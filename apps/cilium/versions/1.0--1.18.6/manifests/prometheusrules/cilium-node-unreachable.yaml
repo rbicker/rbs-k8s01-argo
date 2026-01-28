@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cilium-node-unreachable
+  labels:
+    prometheus: k8s
+spec:
+  groups:
+    - name: cilium-node-unreachable
+      interval: 10s
+      rules:
+        - alert: Kubernetes (k8s) Cilium Node Unreachable
+          expr:  cilium_unreachable_nodes == 1
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Node {{$labels.node}} Unreachable Status"
+            icinga2_perfdata_status: "{{$value}};1;1;0;1"
+            icinga2_severity: "critical"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) node is unreachable."
+            prometheus_expression: 'cilium_unreachable_nodes == 1'
