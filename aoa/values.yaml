@@ -98,3 +98,7 @@ global:
     source:
       targetRevision: main
       repoURL: git@repo.arcade.ch:argo/managed-k8s.git
+  clusterName: k8s01
+  spec:
+      destination:
+        name: in-cluster
