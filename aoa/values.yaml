@@ -99,5 +99,5 @@ global:
     source:
       targetRevision: main
       repoURL: git@github.com:rbicker/rbs-k8s01-argo.git
-      destination:
-        name: in-cluster
+    destination:
+      name: in-cluster
