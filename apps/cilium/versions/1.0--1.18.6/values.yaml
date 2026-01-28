@@ -1,6 +1,3 @@
-# ---------------------------
-# Core Cilium Settings (Terraform parity)
-# ---------------------------
 
 kubeProxyReplacement: "true"
 
@@ -24,10 +21,6 @@ cgroup:
 loadBalancer:
   acceleration: native
 
-# ---------------------------
-# Security Context (Talos REQUIRED)
-# ---------------------------
-
 securityContext:
   capabilities:
     ciliumAgent:
@@ -48,24 +41,20 @@ securityContext:
       - SYS_ADMIN
       - SYS_RESOURCE
 
-# ---------------------------
-# Operator Scaling (Terraform parity)
-# ---------------------------
-
-operator:
-  replicas: 2
-
-# ---------------------------
-# Encryption (Terraform default: off)
-# ---------------------------
+  
 
 encryption:
   enabled: false
   type: wireguard
 
-# ---------------------------
-# Hubble (ENABLED by you)
-# ---------------------------
+defaultLBServiceIPAM: ""
+
+nodePort:
+  enabled: true
+
+# ---
+
+# Customizing starts here, above are defaults from terraform module
 
 hubble:
   enabled: true
@@ -86,23 +75,16 @@ hubble:
       - icmp
       - http
 
-# ---------------------------
-# Prometheus / Monitoring (ENABLED by you)
-# ---------------------------
-
 prometheus:
   serviceMonitor:
     enabled: true
     trustCRDsExist: true
 
 operator:
+  replicas: 2 # Actually this is a default from the terraform module
   prometheus:
     serviceMonitor:
       enabled: true
-
-# ---------------------------
-# Ingress Controller (ENABLED by you)
-# ---------------------------
 
 ingressController:
   enabled: true
@@ -112,22 +94,5 @@ ingressController:
   defaultSecretNamespace: kube-system
   defaultSecretName: cilium-default-cert
 
-# ---------------------------
-# NodePort (Terraform parity)
-# ---------------------------
-
-nodePort:
-  enabled: true
-
-# ---------------------------
-# LB IPAM (Terraform parity — Hetzner CCM handles IPs)
-# ---------------------------
-
-defaultLBServiceIPAM: ""
-
-# ---------------------------
-# Optional: Gateway API (off by default)
-# ---------------------------
-
-gatewayAPI:
-  enabled: false
+#gatewayAPI:
+#  enabled: false
