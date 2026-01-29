@@ -31,6 +31,21 @@ configs:
       end
       return hs
 
+    resource.customizations.health.monitoring.coreos.com_PrometheusRule: |
+      hs = {}
+      hs.status = "Healthy"
+      return hs
+
+    resource.customizations.health.monitoring.coreos.com_ServiceMonitor: |
+      hs = {}
+      hs.status = "Healthy"
+      return hs
+
+    resource.customizations.health.networking.k8s.io_IngressClass: |
+      hs = {}
+      hs.status = "Healthy"
+      return hs
+
   cmp:
     create: true # create the argocd-cmp-cm configmap
     plugins:
