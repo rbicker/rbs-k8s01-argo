@@ -31,17 +31,8 @@ configs:
       end
       return hs
 
-    resource.customizations.health.monitoring.coreos.com_PrometheusRule: |
-      hs = {}
-      hs.status = "Healthy"
-      return hs
-
-    resource.customizations.health.monitoring.coreos.com_ServiceMonitor: |
-      hs = {}
-      hs.status = "Healthy"
-      return hs
-
-    resource.customizations.health.networking.k8s.io_IngressClass: |
+    # Cilium health checks
+    resource.customizations.health.v1_Endpoints: |
       hs = {}
       hs.status = "Healthy"
       return hs
