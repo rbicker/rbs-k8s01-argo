@@ -1,9 +1,5 @@
 ---
-
-extraArgs:
-  leader-elect: "false"
-  allocate-node-cidrs: "false"
-
-hostNetwork: true
-dnsPolicy: Default
-priorityClassName: system-cluster-critical
+# based on terraform module defaults
+networking:
+  enabled: true
+  clusterCIDR: 10.0.16.0/20
