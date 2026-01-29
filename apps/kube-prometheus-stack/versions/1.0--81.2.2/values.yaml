@@ -13,9 +13,6 @@ crds:
 prometheus-node-exporter:
   tolerations:
     - operator: Exists
-  hostPID: true
-  securityContext:
-    privileged: true
 
 grafana:
   # adminPassword: "<admin-password>"
