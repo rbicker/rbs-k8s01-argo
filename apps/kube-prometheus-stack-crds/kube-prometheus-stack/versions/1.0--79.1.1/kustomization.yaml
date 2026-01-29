@@ -1,8 +1,6 @@
 resources:
 - ./generated.yaml
-- ./manifests/alertmanager-config.yaml
-- ./manifests/alertmonitor-deploy.yaml
-- ./manifests/alertmonitor-svc.yaml
+#- ./manifests/alertmanager-config.yaml
 - ./manifests/diskpressure-dashboard-cm.yaml
 - ./manifests/prometheusrules/longhorn-volume-usage-monitoring.yaml
 - ./manifests/prometheusrules/node-disk-pressure.yaml
@@ -21,5 +19,5 @@ patches:
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-generators:
-- ./secret-generator.yaml
+#generators:
+#- ./secret-generator.yaml
