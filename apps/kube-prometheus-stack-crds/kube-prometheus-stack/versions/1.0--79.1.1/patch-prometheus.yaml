@@ -1,0 +1,6 @@
+- op: add
+  path: /spec/storage/volumeClaimTemplate/metadata
+  value:
+    labels:
+      recurring-job.longhorn.io/source: enabled
+      recurring-job.longhorn.io/filesystem-trim-hourly: enabled

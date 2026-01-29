@@ -1,0 +1,39 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: node-disk-pressure
+  namespace: monitoring
+  labels:
+    prometheus: k8s
+spec:
+  groups:
+    - name: node-disk-pressure
+      interval: 10s
+      rules:
+        - alert: Kubernetes (k8s) Node Disk Pressure
+          expr:  kube_node_status_condition{condition="DiskPressure", status="true"} == 1
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Node {{$labels.node}} Disk Pressure"
+            icinga2_perfdata_status: "{{$value}};1;1;0;1"
+            icinga2_severity: "critical"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) node is experiencing Disk pressure."
+            prometheus_expression: 'kube_node_status_condition{condition="DiskPressure",status="true"} == 1'
+
+        - alert: Kubernetes (k8s) Node Disk Pressure Flapping
+          expr:  sum(changes(kube_node_status_condition{status="true",condition="DiskPressure"}[15m])) by (node) > 2
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Node {{$labels.node}} Disk Pressure Flapping"
+            icinga2_perfdata_status: "{{$value}};1;1;0;1"
+            icinga2_severity: "critical"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) node is changing its Disk pressure state more than twice in 15 minutes."
+            prometheus_expression: 'sum(changes(kube_node_status_condition{status="true",condition="DiskPressure"}[15m])) by (node) > 2'

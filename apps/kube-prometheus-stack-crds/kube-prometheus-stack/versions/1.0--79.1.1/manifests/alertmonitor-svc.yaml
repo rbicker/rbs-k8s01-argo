@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmonitor
+  namespace: monitoring
+spec:
+  selector:
+    app: alertmonitor
+  ports:
+  - protocol: TCP
+    port: 9123
+    targetPort: 9123

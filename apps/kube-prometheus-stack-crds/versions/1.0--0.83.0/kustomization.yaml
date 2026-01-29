@@ -1,0 +1,11 @@
+resources:
+- ./manifests/crds/monitoring.coreos.com_alertmanagerconfigs.yaml
+- ./manifests/crds/monitoring.coreos.com_alertmanagers.yaml
+- ./manifests/crds/monitoring.coreos.com_podmonitors.yaml
+- ./manifests/crds/monitoring.coreos.com_probes.yaml
+- ./manifests/crds/monitoring.coreos.com_prometheusagents.yaml
+- ./manifests/crds/monitoring.coreos.com_prometheuses.yaml
+- ./manifests/crds/monitoring.coreos.com_prometheusrules.yaml
+- ./manifests/crds/monitoring.coreos.com_scrapeconfigs.yaml
+- ./manifests/crds/monitoring.coreos.com_servicemonitors.yaml
+- ./manifests/crds/monitoring.coreos.com_thanosrulers.yaml

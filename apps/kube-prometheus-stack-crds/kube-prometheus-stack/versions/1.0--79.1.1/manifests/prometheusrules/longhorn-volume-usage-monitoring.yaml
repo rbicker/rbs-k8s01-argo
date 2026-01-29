@@ -1,0 +1,38 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: longhorn-volume-usage-monitoring
+  labels:
+    prometheus: k8s
+spec:
+  groups:
+    - name: longhorn-volume-usage-monitoring
+      interval: 10s
+      rules:
+        - alert: Kubernetes (k8s) Longhorn Volume Usage Monitoring Warning
+          expr:  'longhorn_volume_used_bytes{pvc_namespace="monitoring"} / longhorn_volume_size_bytes{pvc_namespace="monitoring"} > 0.9'
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Longhorn Volume {{$labels.volume}} Usage Monitoring namespace Warning"
+            icinga2_perfdata_status: "{{$value}};30"
+            icinga2_severity: "warning"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) Longhorn Volume is using more than 90% of its allocated storage."
+            prometheus_expression: 'longhorn_volume_used_bytes{pvc_namespace="monitoring"} / longhorn_volume_size_bytes{pvc_namespace="monitoring"} > 0.9'
+        
+        - alert: Kubernetes (k8s) Longhorn Volume Usage Monitoring Critical
+          expr:  'longhorn_volume_used_bytes{pvc_namespace="monitoring"} / longhorn_volume_size_bytes{pvc_namespace="monitoring"} > 0.95'
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Longhorn Volume {{$labels.volume}} Usage Monitoring namespace Critical"
+            icinga2_perfdata_status: "{{$value}};30"
+            icinga2_severity: "critical"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) Longhorn Volume is using more than 95% of its allocated storage."
+            prometheus_expression: 'longhorn_volume_used_bytes{pvc_namespace="monitoring"} / longhorn_volume_size_bytes{pvc_namespace="monitoring"} > 0.9'

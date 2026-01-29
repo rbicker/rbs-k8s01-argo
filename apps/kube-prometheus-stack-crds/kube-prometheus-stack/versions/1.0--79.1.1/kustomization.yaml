@@ -1,0 +1,25 @@
+resources:
+- ./generated.yaml
+- ./manifests/alertmanager-config.yaml
+- ./manifests/alertmonitor-deploy.yaml
+- ./manifests/alertmonitor-svc.yaml
+- ./manifests/diskpressure-dashboard-cm.yaml
+- ./manifests/prometheusrules/longhorn-volume-usage-monitoring.yaml
+- ./manifests/prometheusrules/node-disk-pressure.yaml
+- ./manifests/prometheusrules/node-memory-pressure.yaml
+- ./manifests/prometheusrules/node-network-unavailable.yaml
+- ./manifests/prometheusrules/node-pid-pressure.yaml
+- ./manifests/prometheusrules/node-pod-count.yaml
+- ./manifests/prometheusrules/node-readyness.yaml
+- ./manifests/prometheusrules/pod-restarts-kube-system.yaml
+- ./manifests/prometheusrules/pod-restarts-monitoring.yaml
+
+patches:
+- path: ./patch-prometheus.yaml
+  target:
+    kind: Prometheus
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+generators:
+- ./secret-generator.yaml

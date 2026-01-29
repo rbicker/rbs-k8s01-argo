@@ -1,0 +1,39 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: node-memory-pressure
+  namespace: monitoring
+  labels:
+    prometheus: k8s
+spec:
+  groups:
+    - name: node-memory-pressure
+      interval: 10s
+      rules:
+        - alert: Kubernetes (k8s) Node Memory Pressure
+          expr:  kube_node_status_condition{condition="MemoryPressure", status="true"} == 1
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Node {{$labels.node}} Memory Pressure"
+            icinga2_perfdata_status: "{{$value}};1;1;0;1"
+            icinga2_severity: "critical"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) node is experiencing Memory pressure."
+            prometheus_expression: 'kube_node_status_condition{condition="MemoryPressure",status="true"} == 1'
+
+        - alert: Kubernetes (k8s) Node Memory Pressure Flapping
+          expr:  sum(changes(kube_node_status_condition{status="true",condition="MemoryPressure"}[15m])) by (node) > 2
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Node {{$labels.node}} Memory Pressure Flapping"
+            icinga2_perfdata_status: "{{$value}};1;1;0;1"
+            icinga2_severity: "critical"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) node is changing its Memory pressure state more than twice in 15 minutes."
+            prometheus_expression: 'sum(changes(kube_node_status_condition{status="true",condition="MemoryPressure"}[15m])) by (node) > 2'

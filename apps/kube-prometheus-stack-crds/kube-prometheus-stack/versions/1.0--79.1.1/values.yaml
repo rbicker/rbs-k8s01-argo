@@ -1,0 +1,131 @@
+---
+
+# Since 68.4.0 it is also possible to use crds.upgradeJob.enabled 
+# for upgrading the CRDs.
+# As we are upgrading from a version < 68.4.0 we still need to
+# install the CRDs first before installing the main chart.
+# We keep the setting here for the future.
+
+crds:
+  upgradeJob:
+    enabled: false
+
+grafana:
+  # adminPassword: "<admin-password>"
+
+  # Sidecar for dashboards and datasources
+  sidecar:
+    skipTlsVerify: true
+    alerts:
+      enabled: false
+      label: grafana_alert
+      labelValue: "1"
+      searchNamespace: ALL
+    dashboards:
+      enabled: true
+      label: grafana_dashboard
+      labelValue: "1"
+      searchNamespace: ALL
+      folderAnnotation: grafana_folder
+      provider:
+        allowUiUpdate: false
+        foldersFromFilesStructure: true
+      annotations:
+        grafana_folder: "KUBE-STATE-METRICS"
+    datasources:
+      enabled: true
+      label: grafana_datasource
+      labelValue: "1"
+      searchNamespace: ALL
+
+
+  grafana.ini:
+    date_formats:
+      default_timezone: browser
+
+  # # loki datasource
+  # datasources:
+  #   datasources.yaml:
+  #     apiVersion: 1
+  #     datasources:
+  #       - name: Loki
+  #         type: loki
+  #         url: http://loki-gateway.monitoring.svc.cluster.local:80
+  #         access: proxy
+  #         isDefault: false
+
+
+alertmanager:
+  enabled: true
+  alertmanagerSpec:
+      # https://github.com/prometheus-operator/prometheus-operator/discussions/3733
+      # used to ensure the root receiver does not get a namespace=monitoring matcher applied
+      # as we want our alertmanager to handle rules from multiple namespaces.
+      alertmanagerConfigMatcherStrategy:
+        type: None
+      alertmanagerConfigSelector:
+        matchLabels:
+          alertmanagerConfig: alertmanager-config
+          
+prometheus:
+  # service:
+  #   labels:
+  #     arcade.ch/lb: metallb
+  #     loadBalancerIP: "<prometheus-vip>"
+  #     type: LoadBalancer
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+    ruleSelector:
+      matchLabels:
+        prometheus: k8s
+    retention: 10d
+    retentionSize: 5GiB
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 5Gi
+
+
+# # loki
+# # https://grafana.com/docs/loki/latest/setup/install/helm/monitor-and-alert/with-local-monitoring/#:~:text=Prometheus%20Operator%20Prequisites
+
+# kubelet:
+#   serviceMonitor:
+#     cAdvisorRelabelings:
+#       - action: replace
+#         replacement: loki
+#         targetLabel: cluster
+#       - targetLabel: metrics_path
+#         sourceLabels:
+#           - "__metrics_path__"
+#       - targetLabel: "instance"
+#         sourceLabels:
+#           - "node"
+
+# "kube-state-metrics":
+#   prometheus:
+#     monitor:
+#       relabelings:
+#         - action: replace
+#           replacement: loki
+#           targetLabel: cluster
+#         - targetLabel: "instance"
+#           sourceLabels:
+#             - "__meta_kubernetes_pod_node_name"
+
+# "prometheus-node-exporter":
+#   prometheus:
+#     monitor:
+#       relabelings:
+#         - action: replace
+#           replacement: loki
+#           targetLabel: cluster
+#         - targetLabel: "instance"
+#           sourceLabels:
+#             - "__meta_kubernetes_pod_node_name"

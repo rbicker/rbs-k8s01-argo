@@ -1,0 +1,61 @@
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: arcade
+  labels:
+    alertmanagerConfig: alertmanager-config
+spec:
+  route:
+    # global settings
+    receiver: "alertmonitor"
+    matchers:
+      - name: arcade_monitoring
+        value: "yes"
+    groupBy: ["alertname", "cluster"]
+    groupWait: 0s
+    groupInterval: 1s
+    repeatInterval: 1h
+
+    # child routes
+    routes:
+      - receiver: "alertmonitor"
+        continue: true
+        matchers:
+          - name: arcade_monitoring
+            value: "yes"
+
+      - receiver: slack
+        matchers:
+          - name: arcade_monitoring
+            value: "yes"
+
+  # receivers section
+  receivers:
+    - name: alertmonitor
+      webhookConfigs:
+        - url: 'http://alertmonitor:9123/webhook'
+          sendResolved: true
+
+    - name: slack
+      slackConfigs:
+        - apiURL:
+            name: arcade-slack-api
+            key: url
+          channel: "#op-kubernetes-alerts"
+          sendResolved: true
+          titleLink: '{{ define "slack.default.titlelink" }}{{ "" }}{{ end }}'
+          title: |-
+            [{{ .Status | toUpper }}] {{ .CommonLabels.alertname }} in cluster {{ .CommonLabels.cluster }}
+          text: |-
+            {{ range .Alerts -}}
+            *Annotations:*
+            {{ range .Annotations.SortedPairs -}} 
+            • *{{ .Name }}:* {{ .Value }}
+            {{ end -}}
+            *Labels:*
+            {{ range .Labels.SortedPairs -}}
+            • *{{ .Name }}:* {{ .Value }}
+            {{ end }}
+            {{ end }}
+

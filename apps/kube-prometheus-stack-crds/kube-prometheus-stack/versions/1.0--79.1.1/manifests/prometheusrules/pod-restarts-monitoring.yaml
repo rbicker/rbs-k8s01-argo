@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: pod-restarts-monitoring
+  labels:
+    prometheus: k8s
+spec:
+  groups:
+    - name: pod-restarts-monitoring
+      interval: 10s
+      rules:
+        - alert: Kubernetes (k8s) Pod Container Restart Count monitoring Namespace
+          expr:  'delta(kube_pod_container_status_restarts_total{namespace="monitoring"}[30m]) > 10'
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Pod {{$labels.pod}} Restart Count monitoring Namespace"
+            icinga2_perfdata_status: "{{$value}};30"
+            icinga2_severity: "warning"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) pod is restarted more than 10 times in the last 30 minutes."
+            prometheus_expression: 'delta(kube_pod_container_status_restarts_total{namespace="monitoring"}[30m]) > 10'

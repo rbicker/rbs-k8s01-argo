@@ -1,0 +1,39 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: node-network-unavailable
+  namespace: monitoring
+  labels:
+    prometheus: k8s
+spec:
+  groups:
+    - name: node-network-unavailable
+      interval: 10s
+      rules:
+        - alert: Kubernetes (k8s) Node Network Unavailable
+          expr:  kube_node_status_condition{condition="NetworkUnavailable", status="true"} == 1
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Node {{$labels.node}} Network Unavailable"
+            icinga2_perfdata_status: "{{$value}};1;1;0;1"
+            icinga2_severity: "critical"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) node is experiencing Network Unavailable."
+            prometheus_expression: 'kube_node_status_condition{condition="NetworkUnavailable",status="true"} == 1'
+
+        - alert: Kubernetes (k8s) Node Network Unavailable Flapping
+          expr:  sum(changes(kube_node_status_condition{status="true",condition="NetworkUnavailable"}[15m])) by (node) > 2
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Node {{$labels.node}} Network Unavailable Flapping"
+            icinga2_perfdata_status: "{{$value}};1;1;0;1"
+            icinga2_severity: "critical"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) node is changing its Network Unavailable state more than twice in 15 minutes."
+            prometheus_expression: 'sum(changes(kube_node_status_condition{status="true",condition="NetworkUnavailable"}[15m])) by (node) > 2'
