@@ -19,37 +19,22 @@ configs:
     # Add the following resource customization in argocd-cm ConfigMap:
     resource.customizations.health.argoproj.io_Application: |
       hs = {}
-
-      -- Default state
-      hs.status = "Healthy"
+      hs.status = "Progressing"
       hs.message = ""
-
       if obj.status ~= nil then
-        -- If syncing → progressing
-        if obj.status.operationState ~= nil and obj.status.operationState.phase == "Running" then
-          hs.status = "Progressing"
-          return hs
-        end
-
-        -- If child apps exist → evaluate worst health
-        if obj.status.resources ~= nil then
-          local worst = "Healthy"
-
-          for _, r in ipairs(obj.status.resources) do
-            if r.health ~= nil and r.health.status ~= nil then
-              if r.health.status == "Degraded" then
-                worst = "Degraded"
-                break
-              elseif r.health.status == "Progressing" then
-                worst = "Progressing"
-              end
-            end
+        if obj.status.health ~= nil then
+          hs.status = obj.status.health.status
+          if obj.status.health.message ~= nil then
+            hs.message = obj.status.health.message
           end
-
-          hs.status = worst
         end
       end
+      return hs
 
+    # Cilium app health is stuck at 'Progressing' without this customization
+    resource.customizations.health_apps_ControllerRevision: |
+      hs = {}
+      hs.status = "Healthy"
       return hs
 
   cmp:
