@@ -16,6 +16,11 @@ apps:
     configVersion: "1.0"
     namespace: kube-system
 
+  hcloudHccm:
+    name: hcloud-hccm
+    configVersion: "1.0"
+    namespace: kube-system
+
   cilium:
     name: cilium
     configVersion: "1.0"
