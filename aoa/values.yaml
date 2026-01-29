@@ -26,6 +26,9 @@ apps:
     configVersion: "1.0"
     namespace: kube-system
     ignoreDifferences:
+    - kind: Endpoints
+      name: cilium-ingress
+      namespace: kube-system
     - kind: Secret
       name: cilium-ca
       namespace: kube-system
