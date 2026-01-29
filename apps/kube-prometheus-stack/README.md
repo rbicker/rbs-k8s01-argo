@@ -11,3 +11,4 @@ Unsere kube-prometheus-stack Applikation ist von der kube-prometheus-stack-crds 
 | kube-prometheus-stack config version | kube-prometheus-stack-crds config version |
 | ------------------------------------ | ----------------------------------------- |
 | 1.0                                  | 1.0                                       |
+| 1.1                                  | 1.1                                       |
