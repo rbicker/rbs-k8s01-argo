@@ -27,4 +27,17 @@ spec:
   destination:
     namespace: {{ $app.namespace | default $app.name | default $key }}
     name: in-cluster
+
+  syncPolicy:
+    syncOptions:
+      - CreateNamespace=true
+      {{- if .serverSideApply }}
+      - ServerSideApply=true
+      {{- end }}
+
+  {{- if .ignoreDifferences }}
+  ignoreDifferences:
+  {{- toYaml .ignoreDifferences | nindent 4 }}
+  {{- end }}
+
 {{- end }}
