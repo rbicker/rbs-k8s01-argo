@@ -1,6 +1,6 @@
+#- ./manifests/alertmanager-config.yaml
 resources:
 - ./generated.yaml
-#- ./manifests/alertmanager-config.yaml
 - ./manifests/diskpressure-dashboard-cm.yaml
 - ./manifests/prometheusrules/longhorn-volume-usage-monitoring.yaml
 - ./manifests/prometheusrules/node-disk-pressure.yaml
@@ -16,12 +16,7 @@ patches:
 - path: ./patch-prometheus.yaml
   target:
     kind: Prometheus
+- patch: patch-namespace.yaml
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-patchesStrategicMerge:
-  - patch-namespace-monitoring.yaml
-
-
-#generators:
-#- ./secret-generator.yaml
