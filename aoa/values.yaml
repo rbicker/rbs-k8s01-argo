@@ -5,6 +5,12 @@ apps:
     configVersion: "1.0"
     namespace: argocd
 
+  hcloudSecret:
+    name: hcloud-secret
+    configVersion: "1.0"
+    namespace: kube-system
+    syncWave: "-1"
+
   hcloudCsi:
     name: hcloud-csi
     configVersion: "1.0"
