@@ -5,7 +5,7 @@ k8sAppLabelOverride: kube-dns
 isClusterService: true
 serviceType: ClusterIP
 service:
-  clusterIP: 10.96.0.10
+  clusterIP: 10.0.8.10
 
 servers:
 - zones:
