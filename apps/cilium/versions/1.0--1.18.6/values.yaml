@@ -93,6 +93,10 @@ ingressController:
   enforceHttps: true
   defaultSecretNamespace: kube-system
   defaultSecretName: cilium-default-cert
+  service:
+    annotations:
+      load-balancer.hetzner.cloud/location: "nbg1"
+      load-balancer.hetzner.cloud/name: "k8s01-lb-cilium-ingress"
 
 #gatewayAPI:
 #  enabled: false
