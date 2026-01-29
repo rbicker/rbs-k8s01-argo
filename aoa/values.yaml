@@ -58,10 +58,10 @@ apps:
         - /spec/template/spec/containers
         - /spec/template/spec/securityContext
 
-  coredns:
-    name: coredns
-    configVersion: "1.0"
-    namespace: kube-system
+  # coredns:
+  #   name: coredns
+  #   configVersion: "1.0"
+  #   namespace: kube-system
 
   # fluentBit:
   #   name: fluent-bit
