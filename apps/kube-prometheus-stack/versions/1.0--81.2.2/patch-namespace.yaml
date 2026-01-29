@@ -1,9 +1,12 @@
 # required on talos
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: monitoring
-  labels:
-    pod-security.kubernetes.io/enforce: privileged
-    pod-security.kubernetes.io/audit: baseline
-    pod-security.kubernetes.io/warn: baseline
+[
+  {
+    "op": "add",
+    "path": "/metadata/labels",
+    "value": {
+      "pod-security.kubernetes.io/enforce": "privileged",
+      "pod-security.kubernetes.io/audit": "baseline",
+      "pod-security.kubernetes.io/warn": "baseline"
+    }
+  }
+]
