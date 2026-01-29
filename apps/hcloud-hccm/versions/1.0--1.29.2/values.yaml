@@ -1,2 +1,9 @@
 ---
-# default
+
+extraArgs:
+  leader-elect: "false"
+  allocate-node-cidrs: "false"
+
+hostNetwork: true
+dnsPolicy: Default
+priorityClassName: system-cluster-critical
