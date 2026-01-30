@@ -1,0 +1,21 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: replicate-regcred-into-namespaces
+spec:
+  generateExisting: true
+  rules:
+    - name: clone-regcred-into-namespace
+      match:
+        resources:
+          kinds:
+            - Namespace
+      generate:
+        apiVersion: v1
+        kind: Secret
+        name: regcred
+        namespace: "{{request.object.metadata.name}}"
+        synchronize: true
+        clone:
+          namespace: kube-system
+          name: regcred
