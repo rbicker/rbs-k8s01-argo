@@ -112,6 +112,16 @@ apps:
   #   name: velero
   #   configVersion: "1.0"
   #   namespace: velero
+
+  letteProxy:
+    name: lette-proxy
+    configVersion: "1.0"
+    namespace: lette-proxy
+
+  letteRedis:
+    name: lette-redis
+    configVersion: "1.0"
+    namespace: lette-proxy
     
 global:
   spec:

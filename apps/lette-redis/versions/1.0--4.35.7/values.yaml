@@ -1,0 +1,60 @@
+replicas: 3
+
+image:
+  repository: redis
+  tag: 7.2-alpine
+
+auth: true
+
+sentinel:
+  enabled: true
+  quorum: 2
+  downAfterMilliseconds: 5000
+  failoverTimeout: 60000
+
+haproxy:
+  enabled: true
+  replicas: 2
+
+persistentVolume:
+  enabled: true
+  size: 1Gi
+  storageClass: ""
+
+resources:
+  redis:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
+
+  sentinel:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+  haproxy:
+    requests:
+      cpu: 50m
+      memory: 64Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
+
+affinity:
+  antiAffinity: hard
+
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 2
+
+metrics:
+  enabled: false
+
+networkPolicy:
+  enabled: false
