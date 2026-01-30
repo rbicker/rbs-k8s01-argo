@@ -9,6 +9,7 @@ metadata:
     app: lette-proxy
 spec:
   type: LoadBalancer
+  externalTrafficPolicy: Local
   selector:
     app: lette-proxy
   ports:
