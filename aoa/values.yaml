@@ -104,6 +104,7 @@ apps:
     name: kyverno
     configVersion: "1.0"
     namespace: kyverno
+    syncWave: "-2"
 
   # velero:
   #   name: velero
