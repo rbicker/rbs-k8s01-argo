@@ -27,6 +27,12 @@ apps:
     configVersion: "1.0"
     namespace: kube-system
 
+  gatewayApi:
+    name: gateway-api
+    configVersion: "1.0"
+    namespace: kube-system
+    syncWave: "-3"
+
   cilium:
     name: cilium
     configVersion: "1.0"
