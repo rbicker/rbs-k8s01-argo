@@ -38,6 +38,8 @@ spec:
               value: "true"
             - name: INSECURE
               value: "true"
+            - name: PROXY_PROTOCOL
+              value: "true"
             - name: SMTP_LOCAL_NAME
               value: smtp.lette.io
             - name: ACME_DOMAIN
