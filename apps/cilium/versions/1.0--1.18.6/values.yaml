@@ -94,6 +94,7 @@ ingressController:
   defaultSecretNamespace: kube-system
   defaultSecretName: cilium-default-cert
   service:
+    externalTrafficPolicy: Local
     annotations:
       load-balancer.hetzner.cloud/location: "nbg1"
       load-balancer.hetzner.cloud/name: "k8s01-lb01"
