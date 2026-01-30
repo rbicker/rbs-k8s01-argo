@@ -1,5 +1,7 @@
 ---
 resources:
+  - ./manifests/lette-web-ingress.yaml
+  - ./manifests/lette-console-deployment.yaml
+  - ./manifests/lette-console-service.yaml
   - ./manifests/lette-landingpage-deployment.yaml
   - ./manifests/lette-landingpage-service.yaml
-  - ./manifests/lette-landingpage-ingress.yaml
