@@ -46,8 +46,7 @@ resources:
       cpu: 100m
       memory: 128Mi
 
-affinity:
-  antiAffinity: hard
+affinity: hard
 
 podDisruptionBudget:
   enabled: true
