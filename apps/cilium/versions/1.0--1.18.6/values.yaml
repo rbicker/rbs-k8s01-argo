@@ -101,5 +101,8 @@ ingressController:
       load-balancer.hetzner.cloud/name: "k8s01-lb01"
       load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
 
+envoy:
+  proxyProtocol: true
+
 #gatewayAPI:
 #  enabled: false
