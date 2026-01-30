@@ -1,10 +1,15 @@
-replicas: 3
+
+# using 2 nodes, each node runs a redis instance
+# if we drain one node, the other node can still serve requests
+# redis becomes read-only when only one node is available.
+replicas: 2
+hardAntiAffinity: false
 
 image:
   repository: redis
   tag: 7.2-alpine
 
-auth: true
+#auth: true
 
 sentinel:
   enabled: true
@@ -20,6 +25,8 @@ persistentVolume:
   enabled: true
   size: 1Gi
   storageClass: ""
+
+
 
 resources:
   redis:
