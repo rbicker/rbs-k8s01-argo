@@ -1,4 +1,7 @@
 ---
+resources:
+  - ./manifests/replicate-cluster-policy.yaml
+  - ./manifests/inject-cluster-policy.yaml
 
 generators:
   - ./secret-generator.yaml

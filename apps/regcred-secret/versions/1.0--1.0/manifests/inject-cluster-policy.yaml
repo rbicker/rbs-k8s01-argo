@@ -1,0 +1,16 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: inject-imagepullsecret
+spec:
+  rules:
+    - name: add-regcred-to-pods
+      match:
+        resources:
+          kinds:
+            - Pod
+      mutate:
+        patchStrategicMerge:
+          spec:
+            imagePullSecrets:
+              - name: regcred
