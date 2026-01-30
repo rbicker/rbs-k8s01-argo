@@ -34,6 +34,8 @@ spec:
               containerPort: 1993
               protocol: TCP
           env:
+            - name: ACME_STAGING
+              value: "true"
             - name: INSECURE
               value: "true"
             - name: SMTP_LOCAL_NAME
