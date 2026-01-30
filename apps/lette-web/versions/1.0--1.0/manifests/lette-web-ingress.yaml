@@ -9,7 +9,7 @@ spec:
   - host: lette.io
     http:
       paths:
-      - pathType: PathPrefix
+      - pathType: Prefix
         path: /
         backend:
           service:
@@ -19,7 +19,7 @@ spec:
   - host: www.lette.io
     http:
       paths:
-      - pathType: PathPrefix
+      - pathType: Prefix
         path: /
         backend:
           service:
