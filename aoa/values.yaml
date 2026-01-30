@@ -122,6 +122,11 @@ apps:
     name: lette-redis
     configVersion: "1.0"
     namespace: lette-proxy
+    ignoreDifferences:
+      - group: policy
+        kind: PodDisruptionBudget
+        jsonPointers:
+          - /spec/enabled
     
 global:
   spec:
