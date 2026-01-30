@@ -26,5 +26,5 @@ spec:
       targetPort: 1143
     - name: imaps
       protocol: TCP
-      port: 1993
+      port: 993
       targetPort: 1993
