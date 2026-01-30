@@ -5,6 +5,12 @@ apps:
     configVersion: "1.0"
     namespace: argocd
 
+  regcredSecret:
+    name: regcred-secret
+    configVersion: "1.0"
+    namespace: kube-system
+    syncWave: "-1"
+
   hcloudSecret:
     name: hcloud-secret
     configVersion: "1.0"
@@ -93,6 +99,11 @@ apps:
     name: metrics-server
     configVersion: "1.0"
     namespace: kube-system
+
+  kyverno:
+    name: kyverno
+    configVersion: "1.0"
+    namespace: kyverno
 
   # velero:
   #   name: velero
