@@ -2,6 +2,14 @@
 # using 2 nodes, each node runs a redis instance
 # if we drain one node, the other node can still serve requests
 # redis becomes read-only when only one node is available.
+
+# if in the future we have more nodes, we can set:
+# replicas: number of nodes: 3
+# hardAntiAffinity: true
+# haproxy.HardAntiAffinity: true
+# podDisruptionBudget.minAvailable: 2
+
+
 replicas: 2
 hardAntiAffinity: false
 
@@ -18,6 +26,7 @@ sentinel:
   failoverTimeout: 60000
 
 haproxy:
+  hardAntiAffinity: false
   enabled: true
   replicas: 2
 
@@ -55,7 +64,7 @@ resources:
 
 podDisruptionBudget:
   enabled: true
-  minAvailable: 2
+  minAvailable: 1
 
 metrics:
   enabled: false
