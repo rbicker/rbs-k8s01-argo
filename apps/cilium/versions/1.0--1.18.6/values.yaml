@@ -90,7 +90,7 @@ ingressController:
   enabled: true
   default: true
   loadbalancerMode: shared
-  #enableProxyProtocol: true
+  enableProxyProtocol: true
   enforceHttps: true
   defaultSecretNamespace: kube-system
   defaultSecretName: cilium-default-cert
@@ -99,7 +99,7 @@ ingressController:
     annotations:
       load-balancer.hetzner.cloud/location: "nbg1"
       load-balancer.hetzner.cloud/name: "k8s01-lb01"
-  #    load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
+      load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
 
 #gatewayAPI:
 #  enabled: false
