@@ -108,6 +108,11 @@ apps:
     serverSideApply: true
     serverSideDiff: true
 
+  certManager:
+    name: cert-manager
+    configVersion: "1.0"
+    namespace: cert-manager
+
   # velero:
   #   name: velero
   #   configVersion: "1.0"
