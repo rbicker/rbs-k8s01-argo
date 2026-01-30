@@ -1,0 +1,10 @@
+apiVersion: viaduct.ai/v1
+kind: ksops
+metadata:
+  name: regcred-secret-generator
+  annotations:
+    config.kubernetes.io/function: |
+      exec:
+        path: ksops
+files:
+  - ./regcred-secret.enc.yaml
