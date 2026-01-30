@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: lette-proxy
-  namespace: default
   labels:
     app: lette-proxy
     app.kubernetes.io/name: lette-proxy
