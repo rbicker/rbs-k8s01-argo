@@ -105,6 +105,8 @@ apps:
     configVersion: "1.0"
     namespace: kyverno
     syncWave: "-2"
+    serverSideApply: true
+    serverSideDiff: true
 
   # velero:
   #   name: velero
