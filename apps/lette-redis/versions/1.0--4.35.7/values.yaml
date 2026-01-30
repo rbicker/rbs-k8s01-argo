@@ -46,7 +46,16 @@ resources:
       cpu: 100m
       memory: 128Mi
 
-affinity: hard
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+            - key: app
+              operator: In
+              values:
+                - redis-ha
+        topologyKey: kubernetes.io/hostname
 
 podDisruptionBudget:
   enabled: true
