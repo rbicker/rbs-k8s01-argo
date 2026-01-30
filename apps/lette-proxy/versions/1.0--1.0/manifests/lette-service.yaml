@@ -5,6 +5,7 @@ metadata:
   annotations:
     load-balancer.hetzner.cloud/location: "nbg1"
     load-balancer.hetzner.cloud/name: "k8s01-lette"
+    load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
   labels:
     app: lette-proxy
 spec:
