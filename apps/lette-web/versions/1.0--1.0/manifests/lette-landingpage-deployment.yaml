@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lette-landingpage
+  labels:
+    app: lette-landingpage
+    app.kubernetes.io/name: lette-landingpage
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lette-landingpage
+  template:
+    metadata:
+      labels:
+        app: lette-landingpage
+    spec:
+      containers:
+        - name: lette-landingpage
+          image: registry.asdf.ooo/lette-landingpage:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP

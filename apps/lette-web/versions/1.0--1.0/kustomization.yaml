@@ -1,0 +1,5 @@
+---
+resources:
+  - ./manifests/lette-landingpage-deployment.yaml
+  - ./manifests/lette-landingpage-service.yaml
+  - ./manifests/lette-landingpage-ingress.yaml

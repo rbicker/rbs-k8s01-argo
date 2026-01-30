@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lette-landingpage
+  labels:
+    app: lette-landingpage
+spec:
+  selector:
+    app: lette-landingpage
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80

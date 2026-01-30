@@ -123,6 +123,11 @@ apps:
   #   configVersion: "1.0"
   #   namespace: velero
 
+  letteWeb:
+    name: lette-web
+    configVersion: "1.0"
+    namespace: lette-web
+
   letteProxy:
     name: lette-proxy
     configVersion: "1.0"
