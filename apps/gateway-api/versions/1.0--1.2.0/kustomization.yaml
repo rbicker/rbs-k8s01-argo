@@ -6,3 +6,4 @@ resources:
 - manifests/gateway.networking.k8s.io_grpcroutes.yaml
 - manifests/gateway.networking.k8s.io_httproutes.yaml
 - manifests/gateway.networking.k8s.io_referencegrants.yaml
+- manifests/gateway.networking.k8s.io_tlsroutes.yaml
