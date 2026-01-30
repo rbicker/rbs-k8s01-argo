@@ -8,7 +8,7 @@ metadata:
     app: lette-proxy
     app.kubernetes.io/name: lette-proxy
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app: lette-proxy
