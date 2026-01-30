@@ -1,5 +1,8 @@
 ---
-
+resources:
+  - ./manifests/lette-deployment.yaml
+  - ./manifests/lette-service.yaml
+  
 generators:
   - ./secret-generator.yaml
   

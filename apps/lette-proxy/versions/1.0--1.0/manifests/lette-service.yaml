@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: lette-proxy
+  namespace: default
+  annotations:
+    load-balancer.hetzner.cloud/location: "nbg1"
+    load-balancer.hetzner.cloud/name: "k8s01-lette"
+  labels:
+    app: lette-proxy
+spec:
+  type: LoadBalancer
+  selector:
+    app: lette-proxy
+  ports:
+    - name: smtp
+      protocol: TCP
+      port: 587
+      targetPort: 1587
+    - name: smtps
+      protocol: TCP
+      port: 465
+      targetPort: 1465
+    - name: imap
+      protocol: TCP
+      port: 143
+      targetPort: 1143
+    - name: imaps
+      protocol: TCP
+      port: 1993
+      targetPort: 1993
