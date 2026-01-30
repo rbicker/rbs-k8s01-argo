@@ -32,6 +32,8 @@ apps:
     configVersion: "1.0"
     namespace: kube-system
     syncWave: "-3"
+    serverSideApply: true
+    serverSideDiff: true
 
   cilium:
     name: cilium
