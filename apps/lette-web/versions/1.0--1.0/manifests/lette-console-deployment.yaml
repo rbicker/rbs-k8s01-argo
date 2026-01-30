@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lette-console
+  labels:
+    app: lette-console
+    app.kubernetes.io/name: lette-console
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lette-console
+  template:
+    metadata:
+      labels:
+        app: lette-console
+    spec:
+      containers:
+        - name: lette-console
+          image: registry.asdf.ooo/lette-console:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP

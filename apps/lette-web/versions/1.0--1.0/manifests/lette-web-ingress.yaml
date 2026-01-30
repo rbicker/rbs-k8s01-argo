@@ -1,0 +1,53 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-namecom
+  name: lette-ingress
+spec:
+  rules:
+  - host: lette.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: lette-landingpage
+            port:
+              number: 80
+  - host: www.lette.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: lette-landingpage
+            port:
+              number: 80
+  - host: lette.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /console
+        backend:
+          service:
+            name: lette-console
+            port:
+              number: 80
+  - host: www.lette.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /console
+        backend:
+          service:
+            name: lette-console
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - lette.io
+    - www.lette.io
+    secretName: lette-web-cert
