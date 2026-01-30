@@ -30,7 +30,7 @@ spec:
     http:
       paths:
       - pathType: ImplementationSpecific
-        path: "/(console|/console/.*|/_app/.*|/api/.*)"
+        path: "/(console|console/.*|_app/.*|api/.*)"
         backend:
           service:
             name: lette-console
@@ -40,7 +40,7 @@ spec:
     http:
       paths:
       - pathType: ImplementationSpecific
-        path: "/(console|/console/.*|/_app/.*|/api/.*)"
+        path: "/(console|console/.*|_app/.*|api/.*)"
         backend:
           service:
             name: lette-console
