@@ -9,7 +9,7 @@ spec:
   - host: lette.io
     http:
       paths:
-      - pathType: Prefix
+      - pathType: PathPrefix
         path: /
         backend:
           service:
@@ -19,7 +19,7 @@ spec:
   - host: www.lette.io
     http:
       paths:
-      - pathType: Prefix
+      - pathType: PathPrefix
         path: /
         backend:
           service:
@@ -29,8 +29,8 @@ spec:
   - host: lette.io
     http:
       paths:
-      - pathType: Prefix
-        path: /console
+      - pathType: ImplementationSpecific
+        path: "(/console|/console/.*|/_app/.*|/api/.*)"
         backend:
           service:
             name: lette-console
@@ -39,8 +39,8 @@ spec:
   - host: www.lette.io
     http:
       paths:
-      - pathType: Prefix
-        path: /console
+      - pathType: ImplementationSpecific
+        path: "(/console|/console/.*|/_app/.*|/api/.*)"
         backend:
           service:
             name: lette-console
