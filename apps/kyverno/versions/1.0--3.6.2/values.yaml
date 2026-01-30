@@ -1,0 +1,8 @@
+extraClusterRoleRules:
+  - apiGroups: [""]
+    resources:
+      - secrets
+    verbs:
+      - get
+      - list
+      - watch
