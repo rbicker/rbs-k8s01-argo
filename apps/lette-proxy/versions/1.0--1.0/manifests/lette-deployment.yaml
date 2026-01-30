@@ -65,7 +65,7 @@ spec:
                   name: supabase-key
                   key: key
             - name: REDIS_ADDRESS
-              value: lette-redis-redis-ha.lette-redis.svc.cluster.local:6379
+              value: lette-redis-redis-ha:6379
             - name: REDIS_PASSWORD
               valueFrom:
                 secretKeyRef:
