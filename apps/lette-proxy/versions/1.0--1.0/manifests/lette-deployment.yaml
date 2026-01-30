@@ -83,4 +83,4 @@ spec:
             items:
               - key: pair.pem
                 path: pair.pem
-            defaultMode: 0400
+            defaultMode: 0444
