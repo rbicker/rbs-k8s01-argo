@@ -113,6 +113,11 @@ apps:
     configVersion: "1.0"
     namespace: cert-manager
 
+  certManagerWebhookNamecom:
+    name: cert-manager-webhook-namecom
+    configVersion: "1.0"
+    namespace: cert-manager
+
   # velero:
   #   name: velero
   #   configVersion: "1.0"
