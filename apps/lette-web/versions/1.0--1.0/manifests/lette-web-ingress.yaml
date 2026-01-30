@@ -1,88 +1,53 @@
-apiVersion: cert-manager.io/v1
-kind: Certificate
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
-  name: lette-web-cert
-spec:
-  secretName: lette-web-cert
-  issuerRef:
-    kind: ClusterIssuer
-    name: letsencrypt-namecom
-  dnsNames:
-    - lette.io
-    - www.lette.io
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: Gateway
-metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-namecom
   name: lette-web
 spec:
-  gatewayClassName: cilium
-  listeners:
-    - name: http
-      port: 80
-      protocol: HTTP
-      allowedRoutes:
-        namespaces:
-          from: Same
-    - name: https
-      port: 443
-      protocol: HTTPS
-      tls:
-        mode: Terminate
-        certificateRefs:
-          - kind: Secret
-            name: lette-web-cert
-      allowedRoutes:
-        namespaces:
-          from: Same
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: lette-web-https
-spec:
-  parentRefs:
-    - name: lette-web
-      sectionName: https
-  hostnames:
+  rules:
+  - host: lette.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: lette-landingpage
+            port:
+              number: 80
+  - host: www.lette.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: lette-landingpage
+            port:
+              number: 80
+  - host: lette.io
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: "/(console|console/.*|_app/.*|api/.*)"
+        backend:
+          service:
+            name: lette-console
+            port:
+              number: 80
+  - host: www.lette.io
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: "/(console|console/.*|_app/.*|api/.*)"
+        backend:
+          service:
+            name: lette-console
+            port:
+              number: 80
+  tls:
+  - hosts:
     - lette.io
     - www.lette.io
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /console
-        - path:
-            type: PathPrefix
-            value: /_app
-        - path:
-            type: PathPrefix
-            value: /api
-      backendRefs:
-        - name: lette-console
-          port: 80
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-      backendRefs:
-        - name: lette-landingpage
-          port: 80
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: lette-web-http-redirect
-spec:
-  parentRefs:
-    - name: lette-web
-      sectionName: http
-  hostnames:
-    - lette.io
-    - www.lette.io
-  rules:
-    - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            statusCode: 301
+    secretName: lette-web-cert
