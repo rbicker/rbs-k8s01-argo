@@ -4,11 +4,14 @@ data:
     logging:
       level: debug
     dbs:
-    - path: ${LITESTREAM_DB}
+    - path: /pg/pb_data
+      pattern: "*.db"
+      recursive: true
+      watch: true
       replicas:
         - type: s3
+          url: s3://fsn1.your-objectstorage.com/rbs01/lette/backend/data.db
           bucket: rbs01
-          path: lette/backend/data.db
           access-key-id: $LITESTREAM_ACCESS_KEY_ID
           secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
           endpoint: "fsn1.your-objectstorage.com"
