@@ -1,0 +1,7 @@
+apiVersion: v1
+data:
+  litestream.yml: |
+    region: fsn1
+kind: ConfigMap
+metadata:
+  name: litestream

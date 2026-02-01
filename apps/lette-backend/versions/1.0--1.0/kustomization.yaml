@@ -3,6 +3,7 @@ resources:
   - ./manifests/lette-backend-service.yaml
   - ./manifests/lette-backend-ingress.yaml
   - ./manifests/lette-backend-pb-data-pvc.yaml
+  - ./manifests/litestream-configmap.yaml
 
 generators:
   - ./secret-generator.yaml
