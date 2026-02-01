@@ -10,7 +10,7 @@ data:
       watch: true
       replicas:
         - type: s3
-          url: s3://fsn1.your-objectstorage.com/rbs01/lette/backend/data.db
+          url: s3://fsn1.your-objectstorage.com/rbs01/lette/backend
           bucket: rbs01
           access-key-id: $LITESTREAM_ACCESS_KEY_ID
           secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
