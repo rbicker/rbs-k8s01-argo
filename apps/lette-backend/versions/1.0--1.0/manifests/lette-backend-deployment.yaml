@@ -25,6 +25,9 @@ spec:
             - name: http
               containerPort: 8090
               protocol: TCP
+          volumeMounts:
+            - name: pb-data
+              mountPath: /pg/pb_data
           env:
             - name: LITESTREAM_REPLICATION_URL
               valueFrom:
@@ -46,9 +49,7 @@ spec:
                 secretKeyRef:
                   name: stripe
                   key: secret-key
-                volumeMounts:
-                  - name: pb-data
-                    mountPath: /pg/pb_data
+          
       volumes:
         - name: pb-data
           persistentVolumeClaim:
