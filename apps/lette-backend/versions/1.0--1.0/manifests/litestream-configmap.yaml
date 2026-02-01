@@ -2,6 +2,8 @@ apiVersion: v1
 data:
   litestream.yml: |
     region: fsn1
+    logging:
+      level: debug
 kind: ConfigMap
 metadata:
   name: litestream
