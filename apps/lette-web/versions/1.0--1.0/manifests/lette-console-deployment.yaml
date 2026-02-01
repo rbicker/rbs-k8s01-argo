@@ -27,6 +27,16 @@ spec:
           env:
             - name: PB_URL
               value: https://backend.lette.io
+            - name: PB_ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: pb-credentials
+                  key: email
+            - name: PB_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pb-credentials
+                  key: password
             - name: STRIPE_PRICE_ID
               value: price_1LgD0wCz3lzvn3gMY9IgeRMo
             - name: STRIPE_WEBHOOK_SECRET
