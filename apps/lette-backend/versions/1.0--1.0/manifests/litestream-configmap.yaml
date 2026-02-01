@@ -1,17 +1,14 @@
 apiVersion: v1
 data:
   litestream.yml: |
-    logging:
-      level: debug
+    #logging:
+    #  level: debug
+
     dbs:
-    - path: /pg/pb_data
-      pattern: "*.db"
-      recursive: true
-      watch: true
+    - path: /pb/pb_data/data.db
       replicas:
         - type: s3
-          url: s3://fsn1.your-objectstorage.com/rbs01/lette/backend
-          bucket: rbs01
+          url: s3://fsn1.your-objectstorage.com/rbs01/lette/backend/data.db
           access-key-id: $LITESTREAM_ACCESS_KEY_ID
           secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
           endpoint: "fsn1.your-objectstorage.com"
