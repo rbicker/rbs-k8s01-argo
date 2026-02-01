@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-namecom
+  name: lette-backend
+spec:
+  rules:
+  - host: backend.lette.io
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: lette-backend
+            port:
+              number: 80
+  tls:
+  - hosts:
+    - lette.io
+    - www.lette.io
+    secretName: lette-backend-cert

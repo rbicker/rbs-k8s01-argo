@@ -1,0 +1,7 @@
+resources:
+  - ./manifests/lette-backend-deployment.yaml
+  - ./manifests/lette-backend-service.yaml
+  - ./manifests/lette-backend-ingress.yaml
+
+generators:
+  - ./secret-generator.yaml
