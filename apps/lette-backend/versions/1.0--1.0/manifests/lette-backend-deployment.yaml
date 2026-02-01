@@ -28,6 +28,9 @@ spec:
           volumeMounts:
             - name: pb-data
               mountPath: /pg/pb_data
+            - name: litestream-config
+              mountPath: /etc/litestream.yml
+              subPath: litestream.yml
           env:
             - name: LITESTREAM_REPLICATION_URL
               value: s3://fsn1.your-objectstorage.com/rbs01/lette/backend/data.db
@@ -53,3 +56,6 @@ spec:
         - name: pb-data
           persistentVolumeClaim:
             claimName: pb-data
+        - name: litestream-config
+          configMap:
+            name: litestream
