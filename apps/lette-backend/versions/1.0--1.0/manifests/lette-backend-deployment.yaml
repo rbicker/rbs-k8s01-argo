@@ -8,7 +8,7 @@ metadata:
     app: lette-backend
     app.kubernetes.io/name: lette-backend
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: lette-backend
@@ -46,44 +46,10 @@ spec:
                 secretKeyRef:
                   name: stripe
                   key: secret-key
-          volumeMounts:
-            - name: pb-data
-              mountPath: /pg/pb_data
+                volumeMounts:
+                  - name: pb-data
+                    mountPath: /pg/pb_data
       volumes:
         - name: pb-data
           persistentVolumeClaim:
             claimName: pb-data
-template:
-metadata:
-labels:
-  app: lette-backend
-spec:
-containers:
-  - name: lette-backend
-    image: registry.asdf.ooo/lette-backend:latest
-    imagePullPolicy: Always
-    ports:
-      - name: http
-        containerPort: 8090
-        protocol: TCP
-    env:
-      - name: LITESTREAM_REPLICATION_URL
-        valueFrom:
-          secretKeyRef:
-            name: litestream
-            key: replication-url
-      - name: LITESTREAM_ACCESS_KEY_ID
-        valueFrom:
-          secretKeyRef:
-            name: litestream
-            key: access-key-id
-      - name: LITESTREAM_SECRET_ACCESS_KEY
-        valueFrom:
-          secretKeyRef:
-            name: litestream
-            key: secret-access-key
-      - name: STRIPE_SECRET_KEY
-        valueFrom:
-          secretKeyRef:
-            name: stripe
-            key: secret-key
