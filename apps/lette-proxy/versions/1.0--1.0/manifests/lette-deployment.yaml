@@ -57,13 +57,18 @@ spec:
                 secretKeyRef:
                   name: namedotcom-token
                   key: token
-            - name: SUPABASE_URL
-              value: https://vusczhoczwietdbyhzom.supabase.co
-            - name: SUPABASE_KEY
+            - name: POCKETBASE_URL
+              value: https://backend.lette.io
+            - name: POCKETBASE_EMAIL
               valueFrom:
                 secretKeyRef:
-                  name: supabase-key
-                  key: key
+                  name: pb-credentials
+                  key: email
+            - name: POCKETBASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: pb-credentials
+                  key: password
             - name: REDIS_ADDRESS
               value: lette-redis-redis-ha:6379
             - name: REDIS_PASSWORD
@@ -72,6 +77,13 @@ spec:
                   name: redis
                   key: password
             - name: REDIS_PORT
+            # - name: SUPABASE_URL
+            #   value: https://vusczhoczwietdbyhzom.supabase.co
+            # - name: SUPABASE_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: supabase-key
+            #       key: key
           volumeMounts:
             - name: client-keypair
               mountPath: /etc/lette/keypair
