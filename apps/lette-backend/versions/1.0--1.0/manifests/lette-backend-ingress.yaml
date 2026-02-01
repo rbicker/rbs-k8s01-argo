@@ -18,6 +18,5 @@ spec:
               number: 80
   tls:
   - hosts:
-    - lette.io
-    - www.lette.io
+    - backend.lette.io
     secretName: lette-backend-cert
