@@ -1,9 +1,22 @@
 apiVersion: v1
 data:
   litestream.yml: |
-    region: fsn1
     logging:
       level: debug
+    dbs:
+    - path: ${LITESTREAM_DB}
+      replicas:
+        - type: s3
+          bucket: rbs01
+          path: lette/backend/data.db
+          access-key-id: $LITESTREAM_ACCESS_KEY_ID
+          secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
+          endpoint: "fsn1.your-objectstorage.com"
+          sync-interval: 10m
+          retention: 672h # 4 weeks
+
 kind: ConfigMap
 metadata:
   name: litestream
+
+
