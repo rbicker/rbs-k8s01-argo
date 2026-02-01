@@ -136,6 +136,11 @@ apps:
     configVersion: "1.0"
     namespace: lette-web
 
+  letteBackend:
+    name: lette-backend
+    configVersion: "1.0"
+    namespace: lette-backend
+
   letteProxy:
     name: lette-proxy
     configVersion: "1.0"
