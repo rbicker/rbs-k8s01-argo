@@ -8,13 +8,14 @@ data:
     - path: /pb/pb_data/data.db
       replicas:
         - type: s3
-          url: s3://fsn1.your-objectstorage.com/rbs01/lette/backend/data.db
           access-key-id: $LITESTREAM_ACCESS_KEY_ID
           secret-access-key: $LITESTREAM_SECRET_ACCESS_KEY
           endpoint: "fsn1.your-objectstorage.com"
+          bucket: rbs01
+          path: lette/backend/data.db
           sync-interval: 10m
           retention: 672h # 4 weeks
-
+          # url: s3://fsn1.your-objectstorage.com/rbs01/lette/backend/data.db
 kind: ConfigMap
 metadata:
   name: litestream
