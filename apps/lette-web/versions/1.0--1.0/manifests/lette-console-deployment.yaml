@@ -25,6 +25,8 @@ spec:
               containerPort: 3000
               protocol: TCP
           env:
+            - name: PB_URL
+              value: https://backend.lette.io
             - name: STRIPE_PRICE_ID
               value: price_1LgD0wCz3lzvn3gMY9IgeRMo
             - name: STRIPE_WEBHOOK_SECRET
@@ -42,8 +44,8 @@ spec:
                 secretKeyRef:
                   name: stripe
                   key: secret-key
-            - name: SUPABASE_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: supabase-key
-                  key: key
+            # - name: SUPABASE_SECRET_KEY
+            #   valueFrom:
+            #     secretKeyRef:
+            #       name: supabase-key
+            #       key: key
