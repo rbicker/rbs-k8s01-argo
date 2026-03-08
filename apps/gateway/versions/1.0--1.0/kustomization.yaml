@@ -1,4 +1,3 @@
 resources:
-  - ./generated.yaml
   - ./manifests/k8s01-lb01-gateway.yaml
   - ./manifests/certs.yaml
