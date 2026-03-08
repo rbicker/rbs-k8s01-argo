@@ -6,6 +6,7 @@ metadata:
 spec:
   parentRefs:
     - name: k8s01-lb01
+      namespace: gateway
       sectionName: https
   hostnames:
     - lette.io
@@ -39,6 +40,7 @@ metadata:
 spec:
   parentRefs:
     - name: k8s01-lb01
+      namespace: gateway
       sectionName: http
   hostnames:
     - lette.io
