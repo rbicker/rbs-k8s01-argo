@@ -1,7 +1,8 @@
 resources:
   - ./manifests/lette-backend-deployment.yaml
   - ./manifests/lette-backend-service.yaml
-  - ./manifests/lette-backend-ingress.yaml
+  # - ./manifests/lette-backend-ingress.yaml # replaced by gateway api
+  - ./manifests/lette-backend-routes.yaml
   - ./manifests/lette-backend-pb-data-pvc.yaml
   - ./manifests/litestream-configmap.yaml
 

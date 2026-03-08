@@ -11,6 +11,7 @@ spec:
   dnsNames:
     - lette.io
     - www.lette.io
+    - backend.lette.io
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
