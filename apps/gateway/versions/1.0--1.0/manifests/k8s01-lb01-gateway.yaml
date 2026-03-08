@@ -17,14 +17,26 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
-    - name: https
+    - name: https-lette
       port: 443
       protocol: HTTPS
       tls:
         mode: Terminate
         certificateRefs:
           - kind: Secret
-            name: cert-lette-web
+            name: cert-lette
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-oana
+      hostname: oana.asdf.ooo
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: cert-oana-asdf
       allowedRoutes:
         namespaces:
           from: All

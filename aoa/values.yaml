@@ -146,6 +146,11 @@ apps:
     configVersion: "1.0"
     namespace: lette-backend
 
+  oana:
+    name: oana
+    configVersion: "1.0"
+    namespace: oana
+
   letteProxy:
     name: lette-proxy
     configVersion: "1.0"

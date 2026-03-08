@@ -2,49 +2,34 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: lette-web-https
+  name: oana-https
 spec:
   parentRefs:
     - name: k8s01-lb01
       namespace: gateway
-      sectionName: https-lette
+      sectionName: https-oana
   hostnames:
-    - lette.io
-    - www.lette.io
+    - oana.asdf.ooo
   rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /console
-        - path:
-            type: PathPrefix
-            value: /_app
-        - path:
-            type: PathPrefix
-            value: /api
-      backendRefs:
-        - name: lette-console
-          port: 80
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: lette-landingpage
+        - name: oana
           port: 80
 ---
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: lette-web-http-redirect
+  name: oana-http-redirect
 spec:
   parentRefs:
     - name: k8s01-lb01
       namespace: gateway
       sectionName: http
   hostnames:
-    - lette.io
-    - www.lette.io
+    - oana.asdf.ooo
   rules:
     - filters:
         - type: RequestRedirect

@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oana
+  labels:
+    app: oana
+    app.kubernetes.io/name: oana
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: oana
+  template:
+    metadata:
+      labels:
+        app: oana
+    spec:
+      containers:
+        - name: oana
+          image: registry.asdf.ooo/oana:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP

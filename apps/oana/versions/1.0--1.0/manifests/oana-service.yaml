@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: oana
+  labels:
+    app: oana
+spec:
+  selector:
+    app: oana
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 3000
