@@ -1,6 +1,7 @@
 ---
 resources:
-  - ./manifests/lette-web-ingress.yaml
+  #- ./manifests/lette-web-ingress.yaml # replaced by gateway api
+  - ./manifests/lette-web-routes.yaml
   - ./manifests/lette-console-deployment.yaml
   - ./manifests/lette-console-service.yaml
   - ./manifests/lette-landingpage-deployment.yaml

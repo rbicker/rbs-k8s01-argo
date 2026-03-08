@@ -72,6 +72,11 @@ apps:
         - /spec/template/spec/containers
         - /spec/template/spec/securityContext
 
+  gateway:
+    name: gateway
+    configVersion: "1.0"
+    namespace: gateway
+
   coredns:
     name: coredns
     configVersion: "1.0"
