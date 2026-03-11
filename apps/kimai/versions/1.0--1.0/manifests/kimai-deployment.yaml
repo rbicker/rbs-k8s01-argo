@@ -27,7 +27,7 @@ spec:
             - name: APP_ENV
               value: prod
             - name: TRUSTED_HOSTS
-              value: localhost,kimai.asdf.ooo
+              value: ^localhost$|^127\.0\.0\.1$|^kimai\.asdf\.ooo$
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
