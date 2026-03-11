@@ -6,7 +6,6 @@ resources:
   - ./manifests/kimai-service.yaml
   - ./manifests/kimai-pvc.yaml
   - ./manifests/kimai-routes.yaml
-  - ./manifests/kimai-nginx-configmap.yaml
 
 generators:
   - ./secret-generator.yaml
