@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: kimai-https
+spec:
+  parentRefs:
+    - name: k8s01-lb01
+      namespace: gateway
+      sectionName: https-kimai
+  hostnames:
+    - kimai.asdf.ooo
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: kimai
+          port: 80

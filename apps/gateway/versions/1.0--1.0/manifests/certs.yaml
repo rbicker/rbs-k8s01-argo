@@ -36,3 +36,15 @@ spec:
     name: letsencrypt-namecom
   dnsNames:
     - matomo.asdf.ooo
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kimai-asdf
+spec:
+  secretName: cert-kimai-asdf
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-namecom
+  dnsNames:
+    - kimai.asdf.ooo

@@ -52,3 +52,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-kimai
+      hostname: kimai.asdf.ooo
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: cert-kimai-asdf
+      allowedRoutes:
+        namespaces:
+          from: All
