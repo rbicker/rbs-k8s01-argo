@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: matomo-db
+  labels:
+    app: matomo-db
+    app.kubernetes.io/name: matomo-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: matomo-db
+  template:
+    metadata:
+      labels:
+        app: matomo-db
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:10.9
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: mysql
+              containerPort: 3306
+              protocol: TCP
+          env:
+            - name: MARIADB_RANDOM_ROOT_PASSWORD
+              value: "yes"
+            - name: MARIADB_DATABASE
+              value: matomo
+            - name: MARIADB_USER
+              value: matomo
+            - name: MARIADB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-password
+                  key: password
+          volumeMounts:
+            - name: mysql-data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-data
+          persistentVolumeClaim:
+            claimName: matomo-db-data

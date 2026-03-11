@@ -1,0 +1,12 @@
+resources:
+  - ./manifests/matomo-db-deployment.yaml
+  - ./manifests/matomo-db-service.yaml
+  - ./manifests/matomo-db-pvc.yaml
+  - ./manifests/matomo-deployment.yaml
+  - ./manifests/matomo-service.yaml
+  - ./manifests/matomo-pvc.yaml
+  - ./manifests/matomo-ingress.yaml
+  - ./manifests/matomo-routes.yaml
+
+generators:
+  - ./secret-generator.yaml

@@ -40,3 +40,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-matomo
+      hostname: matomo.asdf.ooo
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: cert-matomo-asdf
+      allowedRoutes:
+        namespaces:
+          from: All

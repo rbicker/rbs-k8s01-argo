@@ -24,3 +24,15 @@ spec:
     name: letsencrypt-namecom
   dnsNames:
     - oana.asdf.ooo
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: matomo-asdf
+spec:
+  secretName: cert-matomo-asdf
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-namecom
+  dnsNames:
+    - matomo.asdf.ooo
