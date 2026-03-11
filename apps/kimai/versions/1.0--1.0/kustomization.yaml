@@ -4,7 +4,6 @@ resources:
   - ./manifests/kimai-db-pvc.yaml
   - ./manifests/kimai-deployment.yaml
   - ./manifests/kimai-service.yaml
-  - ./manifests/kimai-pvc.yaml
   - ./manifests/kimai-routes.yaml
 
 generators:
