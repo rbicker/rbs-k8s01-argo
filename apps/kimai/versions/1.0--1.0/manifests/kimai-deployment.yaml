@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: kimai
-          image: kimai/kimai2:apache-1.10.2
+          image: kimai/kimai2:apache-2.51.0
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
