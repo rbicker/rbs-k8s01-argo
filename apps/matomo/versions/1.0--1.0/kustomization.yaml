@@ -5,7 +5,6 @@ resources:
   - ./manifests/matomo-deployment.yaml
   - ./manifests/matomo-service.yaml
   - ./manifests/matomo-pvc.yaml
-  - ./manifests/matomo-ingress.yaml
   - ./manifests/matomo-routes.yaml
 
 generators:
