@@ -171,6 +171,11 @@ apps:
     configVersion: "1.0"
     namespace: matomo
 
+  kimai:
+    name: kimai
+    configVersion: "1.0"
+    namespace: kimai
+
 global:
   spec:
     source:
