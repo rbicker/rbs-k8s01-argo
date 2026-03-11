@@ -18,21 +18,3 @@ spec:
       backendRefs:
         - name: oana
           port: 80
----
-apiVersion: gateway.networking.k8s.io/v1
-kind: HTTPRoute
-metadata:
-  name: oana-http-redirect
-spec:
-  parentRefs:
-    - name: k8s01-lb01
-      namespace: gateway
-      sectionName: http
-  hostnames:
-    - oana.asdf.ooo
-  rules:
-    - filters:
-        - type: RequestRedirect
-          requestRedirect:
-            scheme: https
-            statusCode: 301

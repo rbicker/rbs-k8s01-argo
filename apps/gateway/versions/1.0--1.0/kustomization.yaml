@@ -1,3 +1,4 @@
 resources:
   - ./manifests/k8s01-lb01-gateway.yaml
   - ./manifests/certs.yaml
+  - ./manifests/http-redirect-all.yaml
