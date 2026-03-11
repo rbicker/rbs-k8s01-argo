@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: kimai
-          image: kimai/kimai2:fpm-alpine-1.10.2-prod
+          image: kimai/kimai2:apache-1.30.11-prod
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
