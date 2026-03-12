@@ -52,7 +52,7 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: pkl-asdf
+  name: pkl
 spec:
   secretName: cert-pkl
   issuerRef:
