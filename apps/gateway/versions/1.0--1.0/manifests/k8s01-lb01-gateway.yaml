@@ -65,6 +65,7 @@ spec:
         namespaces:
           from: All
     - name: https-pkl
+      hostname: www.parkourluzern.ch
       port: 443
       protocol: HTTPS
       tls:
