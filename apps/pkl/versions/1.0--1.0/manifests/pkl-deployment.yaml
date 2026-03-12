@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pkl
+  labels:
+    app: pkl
+    app.kubernetes.io/name: pkl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pkl
+  template:
+    metadata:
+      labels:
+        app: pkl
+    spec:
+      containers:
+        - name: pkl
+          image: registry.asdf.ooo/pkl-landingpage:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP

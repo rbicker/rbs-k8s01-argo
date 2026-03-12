@@ -1,0 +1,4 @@
+resources:
+  - ./manifests/pkl-deployment.yaml
+  - ./manifests/pkl-service.yaml
+  - ./manifests/pkl-routes.yaml

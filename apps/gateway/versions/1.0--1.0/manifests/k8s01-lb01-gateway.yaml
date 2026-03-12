@@ -64,3 +64,14 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-pkl
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: cert-pkl
+      allowedRoutes:
+        namespaces:
+          from: All
