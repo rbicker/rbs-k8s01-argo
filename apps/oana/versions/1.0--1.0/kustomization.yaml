@@ -1,4 +1,5 @@
 resources:
   - ./manifests/oana-deployment.yaml
+  - ./manifests/oana-pb-data-pvc.yaml
   - ./manifests/oana-service.yaml
   - ./manifests/oana-routes.yaml

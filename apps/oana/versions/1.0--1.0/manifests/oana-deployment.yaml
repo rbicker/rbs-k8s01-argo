@@ -24,3 +24,10 @@ spec:
             - name: http
               containerPort: 3000
               protocol: TCP
+          volumeMounts:
+            - name: pb-data
+              mountPath: /app/pb_data
+      volumes:
+        - name: pb-data
+          persistentVolumeClaim:
+            claimName: pb-data
