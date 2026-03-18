@@ -20,6 +20,9 @@ spec:
         - name: echoip
           image: mpolden/echoip:latest
           imagePullPolicy: Always
+          args:
+            - -H
+            - X-Forwarded-For
           ports:
             - name: http
               containerPort: 8080
