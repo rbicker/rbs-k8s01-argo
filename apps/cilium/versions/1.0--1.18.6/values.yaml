@@ -103,4 +103,5 @@ operator:
 
 gatewayAPI:
   enabled: true
+  enableProxyProtocol: true
   xffNumTrustedHops: 1
