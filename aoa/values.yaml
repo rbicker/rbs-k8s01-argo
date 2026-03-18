@@ -181,6 +181,11 @@ apps:
     configVersion: "1.0"
     namespace: pkl
 
+  echoip:
+    name: echoip
+    configVersion: "1.0"
+    namespace: echoip
+
 global:
   spec:
     source:

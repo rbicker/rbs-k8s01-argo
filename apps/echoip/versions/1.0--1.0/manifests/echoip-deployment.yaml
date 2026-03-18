@@ -1,0 +1,26 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoip
+  labels:
+    app: echoip
+    app.kubernetes.io/name: echoip
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoip
+  template:
+    metadata:
+      labels:
+        app: echoip
+    spec:
+      containers:
+        - name: echoip
+          image: mpolden/echoip:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP

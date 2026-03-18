@@ -64,6 +64,18 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-echoip
+      hostname: ip.asdf.ooo
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: cert-echoip-asdf
+      allowedRoutes:
+        namespaces:
+          from: All
     - name: https-pkl
       hostname: www.parkourluzern.ch
       port: 443

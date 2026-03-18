@@ -1,0 +1,4 @@
+resources:
+  - ./manifests/echoip-deployment.yaml
+  - ./manifests/echoip-service.yaml
+  - ./manifests/echoip-routes.yaml
