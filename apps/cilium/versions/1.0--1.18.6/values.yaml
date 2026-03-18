@@ -104,3 +104,33 @@ operator:
 gatewayAPI:
   enabled: true
   xffNumTrustedHops: 1
+
+
+
+# ----
+#gatewayAPI.enableProxyProtocol: true
+
+# Cilium Envoy is not accepting PROXY protocol on the Gateway listener.
+
+# Your live listener config for gateway/cilium-gateway-k8s01-lb01/listener has these listener filters:
+
+# envoy.filters.listener.tls_inspector
+# cilium.bpf_metadata
+# It does not have:
+
+# envoy.filters.listener.proxy_protocol
+# So the failure is now clear:
+
+# Hetzner LB is sending PROXY, proven by your packet capture.
+# Envoy is not configured with the PROXY listener filter, proven by the live config dump.
+# Therefore the public HTTPS listener is broken because Envoy is trying to interpret PROXY-prefixed traffic as TLS.
+# This is not a Hetzner problem anymore. It is a Cilium Gateway API config-generation/problem path.
+
+# Also important: your gatewayAPI.enableProxyProtocol: true did not take effect for this Gateway listener.
+
+# What this means practically
+# The chart value is either:
+
+# not applied to Gateway API listeners the way we expected in your Cilium version, or
+# not sufficient on its own, or
+# only affects a different path than the Gateway listener you’re using.
