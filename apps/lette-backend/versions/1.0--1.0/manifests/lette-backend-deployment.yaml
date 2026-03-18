@@ -27,7 +27,7 @@ spec:
               protocol: TCP
           volumeMounts:
             - name: pb-data
-              mountPath: /pg/pb_data
+              mountPath: /pb/pb_data
             - name: litestream-config
               mountPath: /etc/litestream.yml
               subPath: litestream.yml
