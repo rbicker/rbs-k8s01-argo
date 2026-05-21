@@ -1,0 +1,122 @@
+
+kubeProxyReplacement: "true"
+
+routingMode: native
+ipv4NativeRoutingCIDR: 10.0.16.0/20
+
+bpf:
+  masquerade: false
+
+ipam:
+  mode: kubernetes
+
+k8sServiceHost: 127.0.0.1
+k8sServicePort: 7445   # Talos kube-prism
+
+cgroup:
+  autoMount:
+    enabled: false
+  hostRoot: /sys/fs/cgroup
+
+loadBalancer:
+  acceleration: native
+
+securityContext:
+  capabilities:
+    ciliumAgent:
+      - CHOWN
+      - KILL
+      - NET_ADMIN
+      - NET_RAW
+      - IPC_LOCK
+      - SYS_ADMIN
+      - SYS_RESOURCE
+      - DAC_OVERRIDE
+      - FOWNER
+      - SETGID
+      - SETUID
+
+    cleanCiliumState:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - SYS_RESOURCE
+
+encryption:
+  enabled: false
+  type: wireguard
+
+defaultLBServiceIPAM: "lbipam"
+
+nodePort:
+  enabled: true
+
+# ---
+
+# Customizing starts here, above are defaults from terraform module
+
+hubble:
+  enabled: true
+
+  relay:
+    enabled: true
+
+  ui:
+    enabled: true
+
+  metrics:
+    enabled:
+      - dns
+      - drop
+      - tcp
+      - flow
+      - port-distribution
+      - icmp
+      - http
+
+prometheus:
+  serviceMonitor:
+    enabled: true
+    trustCRDsExist: true
+
+operator:
+  replicas: 2 # Actually this is a default from the terraform module
+  prometheus:
+    serviceMonitor:
+      enabled: true
+
+# ingressController:
+#   enabled: true
+#   default: true
+#   loadbalancerMode: shared
+#   enableProxyProtocol: true
+#   enforceHttps: true
+#   defaultSecretNamespace: kube-system
+#   defaultSecretName: cilium-default-cert
+#   service:
+#     externalTrafficPolicy: Local
+#     annotations:
+#       load-balancer.hetzner.cloud/location: "nbg1"
+#       load-balancer.hetzner.cloud/name: "k8s01-lb01"
+#       load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
+
+gatewayAPI:
+  enabled: true
+  xffNumTrustedHops: 1
+
+# Retest on 1.19.4 before enabling this together with the Hetzner LB
+# PROXY protocol annotation. The observations below were from the 1.18.6
+# deployment path and should not be assumed to still apply after the upgrade.
+# enableProxyProtocol: true
+
+# 1.18.6 observations kept here for reference:
+# Cilium Envoy was not accepting PROXY protocol on the Gateway listener.
+#
+# The live listener config for gateway/cilium-gateway-k8s01-lb01/listener had:
+# envoy.filters.listener.tls_inspector
+# cilium.bpf_metadata
+#
+# It did not have:
+# envoy.filters.listener.proxy_protocol
+#
+# That meant the Hetzner LB could send PROXY protocol while Envoy still tried
+# to interpret the connection as plain TLS, breaking the public HTTPS listener.

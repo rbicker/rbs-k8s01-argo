@@ -37,7 +37,7 @@ apps:
 
   cilium:
     name: cilium
-    configVersion: "1.0"
+    configVersion: "1.1"
     namespace: kube-system
     ignoreDifferences:
     - kind: Secret

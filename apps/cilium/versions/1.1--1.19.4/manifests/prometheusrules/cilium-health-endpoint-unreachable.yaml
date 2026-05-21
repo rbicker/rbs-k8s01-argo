@@ -1,0 +1,24 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cilium-health-endpoint-unreachable
+  labels:
+    prometheus: k8s
+spec:
+  groups:
+    - name: cilium-health-endpoint-unreachable
+      interval: 10s
+      rules:
+        - alert: Kubernetes (k8s) Cilium Health Endpoint Unreachable
+          expr:  cilium_unreachable_health_endpoints == 1
+          for: 0s
+          labels:
+            arcade_monitoring: "yes"
+          annotations:
+            icinga2_name: "Kubernetes (k8s) Node {{$labels.node}} Health Endpoint Unreachable Status"
+            icinga2_perfdata_status: "{{$value}};1;1;0;1"
+            icinga2_severity: "warning"
+            icinga2_vars: |
+                sla: 2
+            description: "This alert fires when a Kubernetes (k8s) node health endpoint is unreachable."
+            prometheus_expression: 'cilium_unreachable_health_endpoints == 1'
