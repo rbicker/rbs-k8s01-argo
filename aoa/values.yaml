@@ -186,6 +186,11 @@ apps:
     configVersion: "1.0"
     namespace: echoip
 
+  tanjaCourselit:
+    name: tanja-courselit
+    configVersion: "1.0"
+    namespace: tanja-courselit
+
 global:
   spec:
     source:

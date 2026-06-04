@@ -88,3 +88,15 @@ spec:
       allowedRoutes:
         namespaces:
           from: All
+    - name: https-tanja-courselit
+      hostname: kurse.tanjabicker.ch
+      port: 443
+      protocol: HTTPS
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: cert-tanja-courselit
+      allowedRoutes:
+        namespaces:
+          from: All

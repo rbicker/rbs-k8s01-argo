@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tanja-courselit-app
+  labels:
+    app: tanja-courselit-app
+    app.kubernetes.io/name: tanja-courselit
+spec:
+  selector:
+    app: tanja-courselit-app
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP

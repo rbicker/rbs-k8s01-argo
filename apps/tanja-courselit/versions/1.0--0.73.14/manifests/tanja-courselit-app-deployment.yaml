@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tanja-courselit-app
+  labels:
+    app: tanja-courselit-app
+    app.kubernetes.io/name: tanja-courselit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tanja-courselit-app
+  template:
+    metadata:
+      labels:
+        app: tanja-courselit-app
+    spec:
+      containers:
+        - name: app
+          image: codelit/courselit-app:v0.73.14@sha256:307a9ffda97e2b5d81523847cc5bdaab7595b875c77a51faae6dab4982690de8
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: tanja-courselit-app-config
+          env:
+            - name: MONGO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: root-password
+            - name: DB_CONNECTION_STRING
+              value: mongodb://root:$(MONGO_ROOT_PASSWORD)@tanja-courselit-mongodb/tanja-courselit?authSource=admin
+            - name: AUTH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: auth-secret
+            - name: EMAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: email-user
+            - name: EMAIL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: email-pass
+            - name: EMAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: email-host
+            - name: EMAIL_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: email-from
+            - name: SUPER_ADMIN_EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: super-admin-email
+            - name: MEDIALIT_APIKEY
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: medialit-apikey

@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: tanja-courselit-https
+spec:
+  parentRefs:
+    - name: k8s01-lb01
+      namespace: gateway
+      sectionName: https-tanja-courselit
+  hostnames:
+    - kurse.tanjabicker.ch
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: tanja-courselit-app
+          port: 80

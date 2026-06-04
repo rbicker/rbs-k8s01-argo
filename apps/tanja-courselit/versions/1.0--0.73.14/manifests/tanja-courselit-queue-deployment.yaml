@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tanja-courselit-queue
+  labels:
+    app: tanja-courselit-queue
+    app.kubernetes.io/name: tanja-courselit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tanja-courselit-queue
+  template:
+    metadata:
+      labels:
+        app: tanja-courselit-queue
+    spec:
+      containers:
+        - name: queue
+          image: codelit/courselit-queue:v0.73.14@sha256:a561e17450b731707a4c7317096de641c4ecbba9b665c93e067b8963d0cb7ac4
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: tanja-courselit-queue-config
+          env:
+            - name: MONGO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: root-password
+            - name: DB_CONNECTION_STRING
+              value: mongodb://root:$(MONGO_ROOT_PASSWORD)@tanja-courselit-mongodb/tanja-courselit?authSource=admin
+            - name: EMAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: email-user
+            - name: EMAIL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: email-pass
+            - name: EMAIL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: email-host
+            - name: COURSELIT_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: courselit-jwt-secret

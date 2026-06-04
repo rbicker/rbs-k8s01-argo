@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tanja-courselit-queue-config
+data:
+  NODE_ENV: production
+  REDIS_HOST: tanja-courselit-redis
+  DOMAIN: kurse.tanjabicker.ch

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tanja-courselit-mongodb
+  labels:
+    app: tanja-courselit-mongodb
+    app.kubernetes.io/name: tanja-courselit
+spec:
+  selector:
+    app: tanja-courselit-mongodb
+  ports:
+    - name: mongo
+      port: 27017
+      targetPort: 27017
+      protocol: TCP

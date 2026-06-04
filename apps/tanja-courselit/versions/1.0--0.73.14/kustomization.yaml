@@ -1,0 +1,19 @@
+resources:
+  - ./manifests/tanja-courselit-mongodb-deployment.yaml
+  - ./manifests/tanja-courselit-mongodb-service.yaml
+  - ./manifests/tanja-courselit-mongodb-pvc.yaml
+  - ./manifests/tanja-courselit-redis-deployment.yaml
+  - ./manifests/tanja-courselit-redis-service.yaml
+  - ./manifests/tanja-courselit-medialit-configmap.yaml
+  - ./manifests/tanja-courselit-medialit-deployment.yaml
+  - ./manifests/tanja-courselit-medialit-service.yaml
+  - ./manifests/tanja-courselit-queue-configmap.yaml
+  - ./manifests/tanja-courselit-queue-deployment.yaml
+  - ./manifests/tanja-courselit-queue-service.yaml
+  - ./manifests/tanja-courselit-app-configmap.yaml
+  - ./manifests/tanja-courselit-app-deployment.yaml
+  - ./manifests/tanja-courselit-app-service.yaml
+  - ./manifests/tanja-courselit-routes.yaml
+
+generators:
+  - ./secret-generator.yaml

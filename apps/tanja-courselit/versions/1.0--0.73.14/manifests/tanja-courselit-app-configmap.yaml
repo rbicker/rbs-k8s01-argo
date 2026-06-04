@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tanja-courselit-app-config
+data:
+  NODE_ENV: production
+  PORT: "80"
+  CACHE_DIR: /tmp
+  QUEUE_SERVER: http://tanja-courselit-queue
+  MEDIALIT_SERVER: http://tanja-courselit-medialit

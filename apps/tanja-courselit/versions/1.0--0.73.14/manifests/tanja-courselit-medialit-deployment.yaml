@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tanja-courselit-medialit
+  labels:
+    app: tanja-courselit-medialit
+    app.kubernetes.io/name: tanja-courselit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tanja-courselit-medialit
+  template:
+    metadata:
+      labels:
+        app: tanja-courselit-medialit
+    spec:
+      containers:
+        - name: medialit
+          image: codelit/medialit:v0.3.1@sha256:545452906d4c027d1ff291f471ae4fa8479cb344ce2ba5a7e37782a4a5590cbc
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: tanja-courselit-medialit-config
+          env:
+            - name: MONGO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb
+                  key: root-password
+            - name: EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: courselit
+                  key: super-admin-email
+            - name: DB_CONNECTION_STRING
+              value: mongodb://root:$(MONGO_ROOT_PASSWORD)@tanja-courselit-mongodb/medialit?authSource=admin
+            - name: CLOUD_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: medialit
+                  key: cloud-endpoint
+            - name: CLOUD_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: medialit
+                  key: cloud-region
+            - name: CLOUD_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: medialit
+                  key: cloud-key
+            - name: CLOUD_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: medialit
+                  key: cloud-secret
+            - name: CLOUD_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: medialit
+                  key: cloud-bucket-name
+            - name: CLOUD_PREFIX
+              valueFrom:
+                secretKeyRef:
+                  name: medialit
+                  key: cloud-prefix
+            - name: CDN_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: medialit
+                  key: cdn-endpoint

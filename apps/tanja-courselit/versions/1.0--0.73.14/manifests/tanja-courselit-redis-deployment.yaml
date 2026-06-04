@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tanja-courselit-redis
+  labels:
+    app: tanja-courselit-redis
+    app.kubernetes.io/name: tanja-courselit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tanja-courselit-redis
+  template:
+    metadata:
+      labels:
+        app: tanja-courselit-redis
+    spec:
+      containers:
+        - name: redis
+          image: redis:7.4.7-alpine@sha256:02f2cc4882f8bf87c79a220ac958f58c700bdec0dfb9b9ea61b62fb0e8f1bfcf
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP

@@ -73,3 +73,15 @@ spec:
   dnsNames:
     - parkourluzern.ch
     - www.parkourluzern.ch
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tanja-courselit
+spec:
+  secretName: cert-tanja-courselit
+  issuerRef:
+    kind: ClusterIssuer
+    name: letsencrypt-namecom
+  dnsNames:
+    - kurse.tanjabicker.ch
