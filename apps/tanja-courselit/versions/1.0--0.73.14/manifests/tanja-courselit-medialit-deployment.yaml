@@ -64,7 +64,12 @@ spec:
                 secretKeyRef:
                   name: medialit
                   key: cloud-bucket-name
-            - name: CLOUD_PREFIX
+            - name: CLOUD_PUBLIC_BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: medialit
+                  key: cloud-public-bucket-name
+            - name: PATH_PREFIX
               valueFrom:
                 secretKeyRef:
                   name: medialit
