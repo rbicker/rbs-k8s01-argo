@@ -5,6 +5,7 @@ metadata:
 data:
   NODE_ENV: production
   PORT: "80"
+  BETTER_AUTH_URL: https://kurse.tanjabicker.ch
   CACHE_DIR: /tmp
   QUEUE_SERVER: http://tanja-courselit-queue
   MEDIALIT_SERVER: http://tanja-courselit-medialit
