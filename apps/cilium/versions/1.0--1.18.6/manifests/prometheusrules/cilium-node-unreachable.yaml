@@ -4,6 +4,7 @@ metadata:
   name: cilium-node-unreachable
   labels:
     prometheus: k8s
+    release: prometheus
 spec:
   groups:
     - name: cilium-node-unreachable

@@ -4,6 +4,7 @@ metadata:
   name: pod-restarts-monitoring
   labels:
     prometheus: k8s
+    release: prometheus
 spec:
   groups:
     - name: pod-restarts-monitoring

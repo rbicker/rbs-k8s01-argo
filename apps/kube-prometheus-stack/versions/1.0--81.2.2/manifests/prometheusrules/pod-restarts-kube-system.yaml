@@ -4,6 +4,7 @@ metadata:
   name: pod-restarts-kube-system
   labels:
     prometheus: k8s
+    release: prometheus
 spec:
   groups:
     - name: pod-restarts-kube-system

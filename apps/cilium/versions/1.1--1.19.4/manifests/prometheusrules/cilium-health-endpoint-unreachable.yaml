@@ -4,6 +4,7 @@ metadata:
   name: cilium-health-endpoint-unreachable
   labels:
     prometheus: k8s
+    release: prometheus
 spec:
   groups:
     - name: cilium-health-endpoint-unreachable

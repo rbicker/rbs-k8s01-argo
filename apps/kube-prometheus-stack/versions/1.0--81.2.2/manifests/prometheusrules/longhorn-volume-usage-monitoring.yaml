@@ -4,6 +4,7 @@ metadata:
   name: longhorn-volume-usage-monitoring
   labels:
     prometheus: k8s
+    release: prometheus
 spec:
   groups:
     - name: longhorn-volume-usage-monitoring
