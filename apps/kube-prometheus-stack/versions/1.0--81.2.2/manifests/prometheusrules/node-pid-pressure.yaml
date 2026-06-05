@@ -6,7 +6,6 @@ metadata:
   labels:
     prometheus: k8s
     release: prometheus
-
 spec:
   groups:
     - name: node-pid-pressure
