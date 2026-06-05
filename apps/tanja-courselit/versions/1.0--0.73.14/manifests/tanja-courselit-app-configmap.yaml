@@ -8,4 +8,4 @@ data:
   BETTER_AUTH_URL: https://kurse.tanjabicker.ch
   CACHE_DIR: /tmp
   QUEUE_SERVER: http://tanja-courselit-queue
-  MEDIALIT_SERVER: http://tanja-courselit-medialit
+  MEDIALIT_SERVER: https://kurse.tanjabicker.ch

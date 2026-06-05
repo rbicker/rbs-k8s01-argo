@@ -13,6 +13,13 @@ spec:
     - matches:
         - path:
             type: PathPrefix
+            value: /media
+      backendRefs:
+        - name: tanja-courselit-medialit
+          port: 80
+    - matches:
+        - path:
+            type: PathPrefix
             value: /
       backendRefs:
         - name: tanja-courselit-app
