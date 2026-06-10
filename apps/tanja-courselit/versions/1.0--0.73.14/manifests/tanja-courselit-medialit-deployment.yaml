@@ -34,8 +34,21 @@ spec:
               var client_s3_1 = require("@aws-sdk/client-s3");
               var constants_1 = require("../config/constants");
               var cloudfront_signer_1 = require("@aws-sdk/cloudfront-signer");
+              var stream_1 = require("stream");
               var s3PrivateClient = null;
               var s3PublicClient = null;
+              var streamToBuffer = function (body) {
+                  return new Promise(function (resolve, reject) {
+                      var chunks = [];
+                      if (Buffer.isBuffer(body)) {
+                          return resolve(body);
+                      }
+                      stream_1.Readable.from(body)
+                          .on("data", function (chunk) { return chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk)); })
+                          .on("end", function () { return resolve(Buffer.concat(chunks)); })
+                          .on("error", reject);
+                  });
+              };
               var getPrivateS3ClientConfig = function () {
                   var config = {
                       region: constants_1.cloudRegion,
@@ -160,13 +173,13 @@ spec:
                       if (!sourceObject.Body) {
                           throw new Error("Source object body is missing");
                       }
-                      return (0, exports.putObject)({
+                      return streamToBuffer(sourceObject.Body).then(function (bodyBuffer) { return (0, exports.putObject)({
                           Key: params.destinationKey,
                           Bucket: destinationBucket,
-                          Body: sourceObject.Body,
+                          Body: bodyBuffer,
                           ContentType: params.ContentType || sourceObject.ContentType || "application/octet-stream",
                           Tagging: params.Tagging,
-                      });
+                      }); });
                   }); });
               }); };
               exports.copyObject = copyObject;
