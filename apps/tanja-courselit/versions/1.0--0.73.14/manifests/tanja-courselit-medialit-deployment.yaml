@@ -15,6 +15,189 @@ spec:
       labels:
         app: tanja-courselit-medialit
     spec:
+      initContainers:
+        - name: medialit-hotpatch
+          image: codelit/medialit:v0.3.1@sha256:545452906d4c027d1ff291f471ae4fa8479cb344ce2ba5a7e37782a4a5590cbc
+          imagePullPolicy: IfNotPresent
+          command:
+            - /bin/sh
+            - -c
+          args:
+            - |
+              set -eu
+              mkdir -p /hotpatch
+              cat > /hotpatch/s3.js <<'EOF'
+              "use strict";
+              Object.defineProperty(exports, "__esModule", { value: true });
+              exports.deleteFolder = exports.copyObject = exports.generateCloudfrontSignedUrl = exports.generateSignedUrl = exports.getObjectTagging = exports.deleteObject = exports.putObject = exports.getPublicS3ClientConfig = exports.getPrivateS3ClientConfig = void 0;
+              var s3_request_presigner_1 = require("@aws-sdk/s3-request-presigner");
+              var client_s3_1 = require("@aws-sdk/client-s3");
+              var constants_1 = require("../config/constants");
+              var cloudfront_signer_1 = require("@aws-sdk/cloudfront-signer");
+              var s3PrivateClient = null;
+              var s3PublicClient = null;
+              var getPrivateS3ClientConfig = function () {
+                  var config = {
+                      region: constants_1.cloudRegion,
+                      credentials: {
+                          accessKeyId: constants_1.cloudKey,
+                          secretAccessKey: constants_1.cloudSecret,
+                      },
+                  };
+                  if (constants_1.CLOUD_ENDPOINT && !constants_1.CLOUD_ENDPOINT.includes("amazonaws.com")) {
+                      var isVirtualHostedStyle = constants_1.CLOUD_ENDPOINT.includes(constants_1.cloudBucket);
+                      config.endpoint = constants_1.CLOUD_ENDPOINT;
+                      config.forcePathStyle = !isVirtualHostedStyle;
+                  }
+                  return config;
+              };
+              exports.getPrivateS3ClientConfig = getPrivateS3ClientConfig;
+              var getPublicS3ClientConfig = function () {
+                  var config = {
+                      region: constants_1.cloudRegion,
+                      credentials: {
+                          accessKeyId: constants_1.cloudKey,
+                          secretAccessKey: constants_1.cloudSecret,
+                      },
+                  };
+                  if (constants_1.CLOUD_ENDPOINT_PUBLIC && !constants_1.CLOUD_ENDPOINT_PUBLIC.includes("amazonaws.com")) {
+                      var isVirtualHostedStyle = constants_1.CLOUD_ENDPOINT_PUBLIC.includes(constants_1.cloudPublicBucket);
+                      config.endpoint = constants_1.CLOUD_ENDPOINT_PUBLIC;
+                      config.forcePathStyle = !isVirtualHostedStyle;
+                  }
+                  return config;
+              };
+              exports.getPublicS3ClientConfig = getPublicS3ClientConfig;
+              var getS3Client = function (bucket) {
+                  var targetBucket = bucket || constants_1.cloudBucket;
+                  var isPublicBucket = constants_1.cloudPublicBucket && targetBucket === constants_1.cloudPublicBucket;
+                  if (isPublicBucket) {
+                      if (!s3PublicClient) {
+                          s3PublicClient = new client_s3_1.S3Client((0, exports.getPublicS3ClientConfig)());
+                      }
+                      return s3PublicClient;
+                  }
+                  if (!s3PrivateClient) {
+                      s3PrivateClient = new client_s3_1.S3Client((0, exports.getPrivateS3ClientConfig)());
+                  }
+                  return s3PrivateClient;
+              };
+              var putObject = function (params) { return Promise.resolve().then(function () {
+                  if (constants_1.DISABLE_TAGGING) {
+                      delete params.Tagging;
+                  }
+                  var bucket = params.Bucket || constants_1.cloudBucket;
+                  var Bucket = params.Bucket, restParams = (function (obj, keys) {
+                      var target = {};
+                      for (var k in obj) if (Object.prototype.hasOwnProperty.call(obj, k) && keys.indexOf(k) === -1) target[k] = obj[k];
+                      return target;
+                  })(params, ["Bucket"]);
+                  var command = new client_s3_1.PutObjectCommand(Object.assign({}, { Bucket: bucket }, restParams));
+                  return getS3Client(bucket).send(command);
+              }); };
+              exports.putObject = putObject;
+              var deleteObject = function (params) { return Promise.resolve().then(function () {
+                  var bucket = params.Bucket || constants_1.cloudBucket;
+                  var Bucket = params.Bucket, restParams = (function (obj, keys) {
+                      var target = {};
+                      for (var k in obj) if (Object.prototype.hasOwnProperty.call(obj, k) && keys.indexOf(k) === -1) target[k] = obj[k];
+                      return target;
+                  })(params, ["Bucket"]);
+                  var command = new client_s3_1.DeleteObjectCommand(Object.assign({}, { Bucket: bucket }, restParams));
+                  return getS3Client(bucket).send(command);
+              }); };
+              exports.deleteObject = deleteObject;
+              var getObjectTagging = function (params) { return Promise.resolve().then(function () {
+                  var bucket = params.Bucket || constants_1.cloudBucket;
+                  var Bucket = params.Bucket, restParams = (function (obj, keys) {
+                      var target = {};
+                      for (var k in obj) if (Object.prototype.hasOwnProperty.call(obj, k) && keys.indexOf(k) === -1) target[k] = obj[k];
+                      return target;
+                  })(params, ["Bucket"]);
+                  var command = new client_s3_1.GetObjectTaggingCommand(Object.assign({}, { Bucket: bucket }, restParams));
+                  return getS3Client(bucket).send(command);
+              }); };
+              exports.getObjectTagging = getObjectTagging;
+              var generateSignedUrl = function (key, bucket) { return Promise.resolve().then(function () {
+                  var targetBucket = bucket || constants_1.cloudBucket;
+                  var command = new client_s3_1.GetObjectCommand({
+                      Bucket: targetBucket,
+                      Key: key,
+                  });
+                  return (0, s3_request_presigner_1.getSignedUrl)(getS3Client(targetBucket), command);
+              }); };
+              exports.generateSignedUrl = generateSignedUrl;
+              var generateCloudfrontSignedUrl = function (key) {
+                  if (!constants_1.CDN_ENDPOINT || !constants_1.CLOUDFRONT_KEY_PAIR_ID || !constants_1.CLOUDFRONT_PRIVATE_KEY) {
+                      throw new Error("CDN configuration is missing");
+                  }
+                  return (0, cloudfront_signer_1.getSignedUrl)({
+                      url: "".concat(constants_1.CDN_ENDPOINT, "/").concat(key),
+                      keyPairId: constants_1.CLOUDFRONT_KEY_PAIR_ID,
+                      privateKey: constants_1.CLOUDFRONT_PRIVATE_KEY,
+                      dateLessThan: new Date(Date.now() + constants_1.CDN_MAX_AGE).toISOString(),
+                  });
+              };
+              exports.generateCloudfrontSignedUrl = generateCloudfrontSignedUrl;
+              var copyObject = function (params) { return Promise.resolve().then(function () {
+                  var sourceBucket = params.sourceBucket || constants_1.cloudBucket;
+                  var destinationBucket = params.destinationBucket || constants_1.cloudBucket;
+                  var copySource = "".concat(sourceBucket, "/").concat(params.sourceKey);
+                  return getS3Client(destinationBucket)
+                      .send(new client_s3_1.CopyObjectCommand({
+                      Bucket: destinationBucket,
+                      CopySource: copySource,
+                      Key: params.destinationKey,
+                      ContentType: params.ContentType,
+                      Tagging: params.Tagging,
+                  }))
+                      .catch(function () { return Promise.resolve().then(function () {
+                      return getS3Client(sourceBucket).send(new client_s3_1.GetObjectCommand({
+                          Bucket: sourceBucket,
+                          Key: params.sourceKey,
+                      }));
+                  }).then(function (sourceObject) {
+                      if (!sourceObject.Body) {
+                          throw new Error("Source object body is missing");
+                      }
+                      return (0, exports.putObject)({
+                          Key: params.destinationKey,
+                          Bucket: destinationBucket,
+                          Body: sourceObject.Body,
+                          ContentType: params.ContentType || sourceObject.ContentType || "application/octet-stream",
+                          Tagging: params.Tagging,
+                      });
+                  }); });
+              }); };
+              exports.copyObject = copyObject;
+              var deleteFolder = function (prefix, bucket) { return Promise.resolve().then(function () {
+                  var targetBucket = bucket || constants_1.cloudBucket;
+                  var client = getS3Client(targetBucket);
+                  var continuationToken = undefined;
+                  var run = function () { return client.send(new client_s3_1.ListObjectsV2Command({
+                      Bucket: targetBucket,
+                      Prefix: prefix,
+                      ContinuationToken: continuationToken,
+                  })).then(function (response) {
+                      if (response.Contents && response.Contents.length > 0) {
+                          return Promise.all(response.Contents.map(function (object) {
+                              return (0, exports.deleteObject)({ Key: object.Key, Bucket: targetBucket });
+                          })).then(function () { return response; });
+                      }
+                      return response;
+                  }).then(function (response) {
+                      continuationToken = response.NextContinuationToken;
+                      if (continuationToken) {
+                          return run();
+                      }
+                  }); };
+                  return run();
+              }); };
+              exports.deleteFolder = deleteFolder;
+              EOF
+          volumeMounts:
+            - name: medialit-hotpatch
+              mountPath: /hotpatch
       containers:
         - name: medialit
           image: codelit/medialit:v0.3.1@sha256:545452906d4c027d1ff291f471ae4fa8479cb344ce2ba5a7e37782a4a5590cbc
@@ -84,3 +267,10 @@ spec:
                 secretKeyRef:
                   name: medialit
                   key: cdn-endpoint
+          volumeMounts:
+            - name: medialit-hotpatch
+              mountPath: /app/apps/api/dist/src/services/s3.js
+              subPath: s3.js
+      volumes:
+        - name: medialit-hotpatch
+          emptyDir: {}
