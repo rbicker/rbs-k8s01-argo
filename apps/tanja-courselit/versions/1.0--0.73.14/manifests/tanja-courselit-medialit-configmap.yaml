@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: tanja-courselit-medialit-config
-data:
-  TEMP_FILE_DIR_FOR_UPLOADS: /tmp
-  ENABLE_TRUST_PROXY: "true"
