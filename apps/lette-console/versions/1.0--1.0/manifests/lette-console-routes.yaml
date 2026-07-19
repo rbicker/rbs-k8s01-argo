@@ -2,20 +2,19 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: lette-web-https
+  name: lette-console-https
 spec:
   parentRefs:
     - name: k8s01-lb01
       namespace: gateway
       sectionName: https-lette
   hostnames:
-    - lette.io
-    - www.lette.io
+    - console.lette.io
   rules:
     - matches:
         - path:
             type: PathPrefix
             value: /
       backendRefs:
-        - name: lette-landingpage
+        - name: lette-console
           port: 80

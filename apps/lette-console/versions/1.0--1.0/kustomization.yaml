@@ -1,0 +1,8 @@
+---
+resources:
+  - ./manifests/lette-console-routes.yaml
+  - ./manifests/lette-console-deployment.yaml
+  - ./manifests/lette-console-service.yaml
+
+generators:
+  - ./secret-generator.yaml

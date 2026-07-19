@@ -1,0 +1,4 @@
+resources:
+  - ./manifests/lette-billing-deployment.yaml
+  - ./manifests/lette-billing-service.yaml
+  - ./manifests/lette-billing-routes.yaml

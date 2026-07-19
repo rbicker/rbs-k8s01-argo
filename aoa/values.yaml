@@ -141,6 +141,16 @@ apps:
     configVersion: "1.0"
     namespace: lette-web
 
+  letteConsole:
+    name: lette-console
+    configVersion: "1.0"
+    namespace: lette-console
+
+  letteBilling:
+    name: lette-billing
+    configVersion: "1.0"
+    namespace: lette-billing
+
   letteBackend:
     name: lette-backend
     configVersion: "1.0"

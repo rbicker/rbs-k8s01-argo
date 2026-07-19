@@ -12,6 +12,8 @@ spec:
     - lette.io
     - www.lette.io
     - backend.lette.io
+    - console.lette.io
+    - billing.lette.io
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate

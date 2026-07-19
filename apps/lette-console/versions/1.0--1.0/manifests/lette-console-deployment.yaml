@@ -54,8 +54,3 @@ spec:
                 secretKeyRef:
                   name: stripe
                   key: secret-key
-            # - name: SUPABASE_SECRET_KEY
-            #   valueFrom:
-            #     secretKeyRef:
-            #       name: supabase-key
-            #       key: key

@@ -51,6 +51,23 @@ spec:
                 secretKeyRef:
                   name: stripe
                   key: secret-key
+            - name: STRIPE_PRICE_ID
+              value: price_1Tv0oOCz3lzvn3gM2Hu6eSSZ
+            - name: STRIPE_WEBHOOK_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: stripe
+                  key: webhook-secret
+            - name: STRIPE_CHECKOUT_SUCCESS_URL
+              value: https://console.lette.io/app/onboard/payment/success
+            - name: STRIPE_BILLING_CHECKOUT_SUCCESS_URL
+              value: https://billing.lette.io/app
+            - name: STRIPE_BILLING_PORTAL_RETURN_URL
+              value: https://billing.lette.io/app
+            - name: LETTE_BILLING_URL
+              value: https://billing.lette.io
+            - name: LETTE_CONSOLE_URL
+              value: https://console.lette.io
           
       volumes:
         - name: pb-data

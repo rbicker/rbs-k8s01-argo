@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lette-billing
+  labels:
+    app: lette-billing
+    app.kubernetes.io/name: lette-billing
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lette-billing
+  template:
+    metadata:
+      labels:
+        app: lette-billing
+    spec:
+      containers:
+        - name: lette-billing
+          image: registry.asdf.ooo/lette-billing:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: VITE_PB_URL
+              value: https://backend.lette.io
