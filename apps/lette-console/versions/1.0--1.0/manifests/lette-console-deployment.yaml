@@ -25,7 +25,7 @@ spec:
               containerPort: 3000
               protocol: TCP
           env:
-            - name: PB_URL
+            - name: VITE_PB_URL
               value: https://backend.lette.io
             - name: PB_ADMIN_EMAIL
               valueFrom:
