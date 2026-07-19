@@ -68,6 +68,23 @@ spec:
               value: https://billing.lette.io
             - name: LETTE_CONSOLE_URL
               value: https://console.lette.io
+            - name: MICROSOFT_TENANT_LOOKUP_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: microsoft-tenant-lookup
+                  key: client-id
+            - name: MICROSOFT_TENANT_LOOKUP_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: microsoft-tenant-lookup
+                  key: client-secret
+            - name: MICROSOFT_TENANT_LOOKUP_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: microsoft-tenant-lookup
+                  key: tenant-id
+            - name: MICROSOFT_TENANT_LOOKUP_FORCE_SYNC_ON_STARTUP
+              value: "true"
           
       volumes:
         - name: pb-data
