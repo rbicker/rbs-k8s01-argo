@@ -8,8 +8,7 @@ spec:
     annotations:
       load-balancer.hetzner.cloud/location: "nbg1"
       load-balancer.hetzner.cloud/name: "k8s01-lb01-gw-proxyproto-canary"
-      # Keep PROXY protocol disabled here until the cluster-wide Cilium setting is re-tested.
-      load-balancer.hetzner.cloud/uses-proxyprotocol: "false"
+      load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
   listeners:
     - name: http
       port: 80

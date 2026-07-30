@@ -101,15 +101,14 @@ operator:
 
 gatewayAPI:
   enabled: true
+  enableProxyProtocol: true
   xffNumTrustedHops: 1
 
 # Hetzner LB PROXY protocol was retested on July 30, 2026 with Cilium 1.20.0.
-# The chart values and Gateway annotation applied successfully, but public TLS
-# still broke once the feature was active. The generated LB service switched to
-# Hetzner PROXY mode and Cilium received the config, yet HTTPS handshakes still
-# failed against the public listener. Keep PROXY protocol disabled here until a
-# later Cilium/Hetzner combination is verified end-to-end.
-# enableProxyProtocol: true
+# The first production-style retest still broke public TLS once Hetzner PROXY
+# mode was enabled on the shared Gateway, even though Cilium accepted the
+# config. Keep the broader production Gateway annotation disabled until the
+# isolated canary path is verified end-to-end.
 # externalTrafficPolicy: Local
 # useRemoteAddress: false
 # xffNumTrustedHops: 0
