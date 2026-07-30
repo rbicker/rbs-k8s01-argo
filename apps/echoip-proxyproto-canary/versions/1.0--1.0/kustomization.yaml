@@ -1,5 +1,6 @@
 resources:
   - ./manifests/nginx-configmap.yaml
   - ./manifests/proxyproto-canary-deployment.yaml
+  - ./manifests/proxyproto-canary-gateway-service.yaml
   - ./manifests/proxyproto-canary-service.yaml
   - ./manifests/proxyproto-canary-route.yaml
