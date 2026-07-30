@@ -29,7 +29,7 @@ apps:
 
   gatewayApi:
     name: gateway-api
-    configVersion: "1.0"
+    configVersion: "1.1"
     namespace: kube-system
     syncWave: "-3"
     serverSideApply: true
