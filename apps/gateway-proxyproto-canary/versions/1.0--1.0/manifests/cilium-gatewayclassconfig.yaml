@@ -1,0 +1,9 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumGatewayClassConfig
+metadata:
+  name: cilium-local
+spec:
+  description: Canary GatewayClass config for testing Local traffic policy.
+  service:
+    type: LoadBalancer
+    externalTrafficPolicy: Local
