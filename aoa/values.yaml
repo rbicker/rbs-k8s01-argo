@@ -186,11 +186,6 @@ apps:
     configVersion: "1.0"
     namespace: kimai
 
-  pkl:
-    name: pkl
-    configVersion: "1.0"
-    namespace: pkl
-
   echoip:
     name: echoip
     configVersion: "1.0"
