@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echoip-proxyproto-canary
+  labels:
+    app: echoip-proxyproto-canary
+    app.kubernetes.io/name: echoip-proxyproto-canary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: echoip-proxyproto-canary
+  template:
+    metadata:
+      labels:
+        app: echoip-proxyproto-canary
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27-alpine
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: echoip-proxyproto-canary-nginx

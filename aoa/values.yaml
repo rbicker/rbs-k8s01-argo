@@ -191,6 +191,12 @@ apps:
     configVersion: "1.0"
     namespace: echoip
 
+  echoipProxyprotoCanary:
+    name: echoip-proxyproto-canary
+    configVersion: "1.0"
+    namespace: echoip-proxyproto-canary
+    syncWave: "1"
+
 global:
   spec:
     source:

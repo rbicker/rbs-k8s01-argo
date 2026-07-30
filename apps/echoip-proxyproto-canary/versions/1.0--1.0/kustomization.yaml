@@ -1,0 +1,4 @@
+resources:
+  - ./manifests/nginx-configmap.yaml
+  - ./manifests/proxyproto-canary-deployment.yaml
+  - ./manifests/proxyproto-canary-service.yaml
