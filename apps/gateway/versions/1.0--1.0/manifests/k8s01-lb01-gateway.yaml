@@ -9,7 +9,7 @@ spec:
     annotations:
       load-balancer.hetzner.cloud/location: "nbg1"
       load-balancer.hetzner.cloud/name: "k8s01-lb01"
-      load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
+      load-balancer.hetzner.cloud/uses-proxyprotocol: "false"
   listeners:
     - name: http
       port: 80
