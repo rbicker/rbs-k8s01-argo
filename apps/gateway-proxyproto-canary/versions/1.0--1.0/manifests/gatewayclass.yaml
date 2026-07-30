@@ -9,3 +9,4 @@ spec:
     group: cilium.io
     kind: CiliumGatewayClassConfig
     name: cilium-local
+    namespace: gateway

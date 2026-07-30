@@ -2,6 +2,7 @@ apiVersion: cilium.io/v2alpha1
 kind: CiliumGatewayClassConfig
 metadata:
   name: cilium-local
+  namespace: gateway
 spec:
   description: Canary GatewayClass config for testing Local traffic policy.
   service:
