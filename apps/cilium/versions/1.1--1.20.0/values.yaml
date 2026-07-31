@@ -110,7 +110,7 @@ gatewayAPI:
 # externalTrafficPolicy: Local on the generated Gateway Service. But once
 # Gateway API PROXY protocol was enabled, the canary listener still failed
 # end-to-end after restarts, so leave it disabled for now.
-# enableProxyProtocol: true
+  enableProxyProtocol: true
 # externalTrafficPolicy: Local
 # useRemoteAddress: false
 # xffNumTrustedHops: 0
