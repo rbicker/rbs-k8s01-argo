@@ -24,3 +24,6 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          env:
+            - name: PUBLIC_GA_MEASUREMENT_ID
+              value: G-2WN1L0YMLJ

@@ -68,6 +68,13 @@ spec:
               value: https://billing.lette.io
             - name: LETTE_CONSOLE_URL
               value: https://console.lette.io
+            - name: GA4_MEASUREMENT_ID
+              value: G-2WN1L0YMLJ
+            - name: GA4_API_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: ga4
+                  key: api-secret
             - name: MICROSOFT_TENANT_LOOKUP_CLIENT_ID
               valueFrom:
                 secretKeyRef:
