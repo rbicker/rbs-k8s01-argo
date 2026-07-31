@@ -104,14 +104,6 @@ gatewayAPI:
   xffNumTrustedHops: 1
   enableProxyProtocol: true
 
-# Hetzner LB PROXY protocol was retested on July 30, 2026 with Cilium 1.20.0.
-# Both the production-style retest and the isolated Gateway API canary retest
-# failed in this cluster. Direct Hetzner PROXY protocol to a plain LoadBalancer
-# Service worked, and a dedicated CiliumGatewayClassConfig successfully forced
-# externalTrafficPolicy: Local on the generated Gateway Service. But once
-# Gateway API PROXY protocol was enabled, the canary listener still failed
-# end-to-end after restarts, so leave it disabled for now.
-# enableProxyProtocol: true
-# externalTrafficPolicy: Local
-# useRemoteAddress: false
-# xffNumTrustedHops: 0
+#   externalTrafficPolicy: Local
+#   useRemoteAddress: false
+#   xffNumTrustedHops: 0

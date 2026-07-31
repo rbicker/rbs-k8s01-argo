@@ -1,4 +1,0 @@
-resources:
-  - ./manifests/cilium-gatewayclassconfig.yaml
-  - ./manifests/gatewayclass.yaml
-  - ./manifests/gateway.yaml

@@ -17,12 +17,11 @@ spec:
         app: echoip
     spec:
       containers:
-        - name: echoip
-          image: mpolden/echoip:latest
-          imagePullPolicy: Always
-          args:
-            - -H
-            - X-Forwarded-For
+        - name: http-echo
+          image: mendhak/http-https-echo:latest
+          env:
+            - name: HTTP_PORT
+              value: "8080"
           ports:
             - name: http
               containerPort: 8080
